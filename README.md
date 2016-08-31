@@ -2,7 +2,7 @@
 
 This is a sample [SDL](http://www.libsdl.org/) application developed using Visual Studio.
 
-**Setup instructions**
+**Setup Instructions (before SDL was checked in)**
 
 1. Download the [SDL2 development library](http://www.libsdl.org/download-2.0.php) for Visual C++ 32/64-bit
 
