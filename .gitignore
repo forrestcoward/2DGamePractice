@@ -2,4 +2,9 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/SDL_Samples/SDL_Samples/Debug
+/SDL_Samples/.vs/
+/SDL_Samples/Debug/
+/SDL_Samples/SDL_Samples/Debug/
+/SDL_Samples/SDL_Samples.sdf
+/SDL_Samples/SDL_Samples.VC.opendb
+/SDL_Samples/SDL_Samples/SDL_Samples.vcxproj.user

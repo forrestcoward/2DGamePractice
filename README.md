@@ -21,3 +21,5 @@ This is a sample [SDL](http://www.libsdl.org/) application developed using Visua
 	
 6. After building and attempting to run the 'SDL_Samples' project, Visual Studio will complain about missing libraries. Copy the .dll files from ``/lib/x86`` to the output directory to fix this.
 
+7. Having trouble? You can also see [setup SDL in Visual Studio 2015](http://headerphile.com/sdl2/sdl2-part-0-setting-up-visual-studio-for-sdl2/)
+
