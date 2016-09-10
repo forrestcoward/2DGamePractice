@@ -21,7 +21,6 @@ public:
 	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip = nullptr);
 	static vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fileName, SDL_Texture* spriteSheet);
 	static void Texture::RenderAllTerrain(vector <Texture> Terrain, SDL_Renderer *renderer, double offset);
-	static void Texture::RenderMario(SDL_Renderer *renderer, Creature* mario, vector <Texture>* Terrain);
 	int Texture::getY();
 	int Texture::getX();
 	int Texture::getW();

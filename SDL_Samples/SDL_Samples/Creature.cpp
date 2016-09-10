@@ -8,7 +8,7 @@
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity)
 {
 	jumping = false;
-	gravity = 0;
+	gravity =.5;
 	this->texture = texture;
 	this->x = x;
 	this->y = y;
@@ -32,3 +32,32 @@ bool Creature::isCollidingBelow(vector <Texture>* Terrain)
 	return false;
 }
 
+void Creature::jump(vector <Texture>* Terrain)
+{
+	if (Creature::isCollidingBelow(Terrain) && !jumping)
+	{
+		jumping = true;
+		verticalVelocity = -9
+			;
+	}
+	//else do nothing
+}
+
+void Creature::jumpAdjust()
+{
+	if (jumping)
+	{
+		y += verticalVelocity;
+		verticalVelocity += gravity;
+	}
+}
+
+void Creature::checkLand(vector <Texture>* Terrain) 
+{
+	if (Creature::isCollidingBelow(Terrain) && jumping)
+	{
+		jumping = false;
+		verticalVelocity = 0;
+	}
+	//else do nothing
+}

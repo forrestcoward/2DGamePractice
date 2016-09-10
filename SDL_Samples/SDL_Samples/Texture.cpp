@@ -51,33 +51,6 @@ void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x,
 	RenderTexture(texture, renderer, dst, clip);
 }
 
-void Texture::RenderMario(SDL_Renderer *renderer, Creature* mario, vector <Texture>* Terrain)
-{
-	SDL_Rect dst;
-	dst.x = mario->x;
-	dst.y = mario->y;
-	dst.h = mario->h;
-	dst.w = mario->w;
-	
-	//check if jumping 
-	if (mario->jumping)
-	{
-		if (mario->isCollidingBelow(Terrain))
-		{
-			while (mario->jumping)
-			{
-				mario->y += mario->verticalVelocity;
-				mario->verticalVelocity -= mario->gravity;
-				RenderTexture(mario->texture, renderer,mario->x, mario->y);
-				if (mario->isCollidingBelow(Terrain))
-					mario->jumping = false;
-			}
-		}
-	}
-	mario->jumping = false;
-	RenderTexture(mario->texture, renderer, mario->x, mario->y);
-}
-
 /* 
 *Renders a clipped texture.
 */ 

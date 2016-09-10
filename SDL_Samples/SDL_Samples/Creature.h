@@ -19,12 +19,15 @@ public:
 	int y;
 	int w;
 	int h;
-	int gravity;
+	double gravity;
 	int velocity;
-	int verticalVelocity;
+	double verticalVelocity;
 	bool jumping;
 	SDL_Texture* texture;
 	Creature(SDL_Texture* texture, int x, int y, int velocity);
 	bool Creature::isCollidingBelow(vector <Texture>* Terrain);
+	void Creature::jump(vector <Texture>* Terrain);
+	void Creature::jumpAdjust();
+	void Creature::checkLand(vector <Texture>* Terrain);
 };
 #endif

@@ -9,12 +9,15 @@
 #include <vector>
 using namespace std;
 double OFFSET = 0;
+const int MARIO_WIDTH = 16;
+const int MARIO_HEIGHT = 27;
 const int BACKGROUND_WIDTH = 960;
 const int NUMBER_OF_BLOCKS = 10;
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
 const int MARIO_STARTING_X = 100;
-const int MARIO_STARTING_Y = 100;
+const int MARIO_STARTING_Y = SCREEN_HEIGHT - 32;
+int MARIO_STARTING_SPEED = 5;
 const char* SCREEN_TITLE = "Sample";
 int main(int argc, char **argv)
 {
@@ -46,10 +49,12 @@ int main(int argc, char **argv)
 	//Create Terrain vector
 	vector <Texture> mapTerrain = Texture::CreateTextureVector(tileClips, "level1.txt", iceBlocks);
 
-	//mario starts at 100,100, with velocity speed 2.
-	Creature* mario = &Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 2);
-	mario->w = 16;
-	mario->h = 27;
+	//mario starts at 100,100, with velocity speed 5.
+	Creature* mario = &Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 5);
+	mario->w = MARIO_WIDTH;
+	mario->h = MARIO_HEIGHT;
+
+
 
 	//background scroll speed
 	double background_x = 0;
@@ -74,21 +79,15 @@ int main(int argc, char **argv)
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_UP:
-					mario->jumping = true;
-					break;
-				case SDLK_DOWN:
-					if ((mario->y + mario->h) >= (SCREEN_HEIGHT - mario->velocity))
-						mario->y = (SCREEN_HEIGHT - mario->h);
-					else
-						mario->y += mario->velocity;
+					mario->jump(&mapTerrain);
 					break;
 				case SDLK_LEFT:
 					if (mario->x < mario->velocity)
 						mario->x = 0;
 					else if(background_x < 0)
 					{
-						OFFSET++;
-						background_x++;
+						OFFSET += MARIO_STARTING_SPEED;
+						background_x += MARIO_STARTING_SPEED;
 					}
 					break;
 				case SDLK_RIGHT:
@@ -98,8 +97,8 @@ int main(int argc, char **argv)
 					}
 					else if(background_x <= 0)
 					{
-						OFFSET--;
-						background_x--;
+						OFFSET -= MARIO_STARTING_SPEED;
+						background_x -= MARIO_STARTING_SPEED;
 					}
 					break;
 				default:
@@ -107,13 +106,15 @@ int main(int argc, char **argv)
 				}
 			}
 		}
+		mario->jumpAdjust();
+		mario->checkLand(&mapTerrain);
 		// Clear the screen.
 		SDL_RenderClear(renderer);
 		//Render background.
 		Texture::RenderTexture(background_texture, renderer, background_x, 0);	
 
 		// Draw mario at the (x, y) location.
-		Texture::RenderMario(renderer, mario, &mapTerrain);
+		Texture::RenderTexture(mario->texture, renderer, mario->x, mario->y);
 
 		//Render the map terrain
 		Texture::RenderAllTerrain(mapTerrain, renderer, OFFSET);
