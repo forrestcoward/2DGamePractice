@@ -1,6 +1,12 @@
 #include <string>
 #include <SDL_image.h>
+#include <vector>
+#include <fstream>
 #include "Texture.h"
+
+const int SCREEN_WIDTH = 680;
+const int SCREEN_HEIGHT = 380;
+
 using namespace std;
 
 /*
@@ -14,24 +20,168 @@ SDL_Texture* Texture::LoadTexture(const string &file, SDL_Renderer *renderer)
 }
 
 /*
- * Renders a texture onto a renderer.
- */
-void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y)
-{
-	int w, h;
-	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-	RenderTexture(texture, renderer, x, y, w, h);
-}
-
-/*
- * Renders a texture onto a renderer with a specified with and height.
+ * Renders a texture onto a renderer with a specified width and height.
  */
 void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
 {
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
-	dst.w = w;
 	dst.h = h;
+	dst.w = w;
 	SDL_RenderCopy(renderer, texture, NULL, &dst);
+}
+
+/*
+* Renders a clip of a texture.
+*/
+void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip)
+{
+	SDL_Rect dst;
+	dst.x = x;
+	dst.y = y;
+	if (clip != nullptr)
+	{
+		dst.w = clip->w;
+		dst.h = clip->h;
+	}
+	else
+		SDL_QueryTexture(texture, NULL, NULL, &dst.w ,&dst.h);
+
+	RenderTexture(texture, renderer, dst, clip);
+}
+
+void Texture::RenderMario(SDL_Renderer *renderer, Creature* mario, vector <Texture>* Terrain)
+{
+	SDL_Rect dst;
+	dst.x = mario->x;
+	dst.y = mario->y;
+	dst.h = mario->h;
+	dst.w = mario->w;
+	
+	//check if jumping 
+	if (mario->jumping)
+	{
+		if (mario->isCollidingBelow(Terrain))
+		{
+			while (mario->jumping)
+			{
+				mario->y += mario->verticalVelocity;
+				mario->verticalVelocity -= mario->gravity;
+				RenderTexture(mario->texture, renderer,mario->x, mario->y);
+				if (mario->isCollidingBelow(Terrain))
+					mario->jumping = false;
+			}
+		}
+	}
+	mario->jumping = false;
+	RenderTexture(mario->texture, renderer, mario->x, mario->y);
+}
+
+/* 
+*Renders a clipped texture.
+*/ 
+void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip)
+{
+	SDL_RenderCopy(renderer, texture, clip, &dst);
+}
+
+/*
+* Cuts up the spritesheet.
+*/
+void Texture::cutSprites(SDL_Texture* spriteSheet, vector <SDL_Rect>* spriteClips)
+{
+	SDL_Rect tempClip;
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			tempClip.x = 48 * j;
+			tempClip.y = 32 * i;
+			tempClip.w = 48;
+			tempClip.h = 32;
+			spriteClips->push_back(tempClip);
+		}	
+	}
+}
+
+vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fileName, SDL_Texture* spriteSheet)
+{
+	int currentX = 0;
+	int currentY = SCREEN_HEIGHT - 32;
+	char currentCharacter;
+	vector <Texture> Terrain;
+	ifstream levelFile;
+	levelFile.open(fileName);
+
+	while (levelFile >> noskipws >> currentCharacter)
+	{
+		if (currentCharacter == 'a')
+		{
+			Texture newTerrain;
+			newTerrain.x = currentX;
+			newTerrain.y = currentY;
+			newTerrain.h = clips[0].h;
+			newTerrain.w = clips[0].w;
+			newTerrain.Clip = clips[0];
+			newTerrain.spriteSheet = spriteSheet;
+			Terrain.push_back(newTerrain);
+		}
+		else if (currentCharacter == 'b')
+		{
+			Texture newTerrain;
+			newTerrain.x = currentX;
+			newTerrain.y = currentY;
+			newTerrain.h = clips[1].h;
+			newTerrain.w = clips[1].w;
+			newTerrain.Clip = clips[1];
+			newTerrain.spriteSheet = spriteSheet;
+			Terrain.push_back(newTerrain);
+		}
+		else if (currentCharacter == '#')
+		{
+			currentX += 48;
+			currentY = SCREEN_HEIGHT - 32;
+		}
+		else if(currentCharacter == '0')
+		{
+			currentY += 32;
+		}
+			
+			
+	}
+
+	return Terrain;
+}
+
+//Return w
+int Texture::getW()
+{
+	return this->w;
+}
+
+//Return h
+int Texture::getH() 
+{
+	return this->h;
+}
+
+void Texture::RenderAllTerrain(vector <Texture> Terrain, SDL_Renderer *renderer, double offset)
+{
+	for (int i = 0; i < Terrain.size(); i++)
+	{
+		Texture::RenderTexture(Terrain[i].spriteSheet, renderer, Terrain[i].x + offset, Terrain[i].y, &Terrain[i].Clip);
+	}
+}
+
+// Return y
+int Texture::getY()
+{
+	return this->y;
+}
+
+//Return x 
+int Texture::getX()
+{
+	return this->x;
 }

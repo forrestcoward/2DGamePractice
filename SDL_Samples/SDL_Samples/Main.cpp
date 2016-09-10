@@ -3,17 +3,19 @@
 #include <SDL_image.h>
 #include <string>
 #include "Texture.h"
-#include "Block.h"
+#include "Creature.h"
 #include <cstdlib>
 #include <time.h>
 #include <vector>
 using namespace std;
+double OFFSET = 0;
+const int BACKGROUND_WIDTH = 960;
 const int NUMBER_OF_BLOCKS = 10;
-const int MOVEMENT = 3;
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 680;
+const int SCREEN_HEIGHT = 380;
+const int MARIO_STARTING_X = 100;
+const int MARIO_STARTING_Y = 100;
 const char* SCREEN_TITLE = "Sample";
-
 int main(int argc, char **argv)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -26,26 +28,31 @@ int main(int argc, char **argv)
 
 	// Create the mario texture.
 	SDL_Texture* mario_texture = Texture::LoadTexture("../images/mario_right_still.png", renderer);
+
 	// Create background texture.
 	SDL_Texture* background_texture = Texture::LoadTexture("../images/backgrounds/Icy_Background.png", renderer);
-	SDL_Texture* koopa_texture = Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png.", renderer);
+
+	// Create yellow block texture.
 	SDL_Texture* block_texture = Texture::LoadTexture("../images/items/Question_Block_0.png", renderer);
 
-	vector<Block>blocks;
-	for (int i = 0; i < NUMBER_OF_BLOCKS; i++)
-	{
-		int x = rand() % SCREEN_WIDTH;
-		int y = rand() % SCREEN_HEIGHT;
-		blocks.push_back(Block(block_texture, x, y));
-	}
-	for (int i = 0; i < NUMBER_OF_BLOCKS; i++)
-	{
-		Block b = blocks[i];
-		int width = b.w;
-		int height = b.h;
-	}
-	//mario starts at 100,100
-	Block mario = Block(mario_texture, 100, 100);
+	//Load icy tiles.
+	SDL_Texture* iceBlocks;
+	iceBlocks = Texture::LoadTexture("../images/tiles/Icy_Tiles.png", renderer);
+
+	//Setup the clips for our image
+	vector <SDL_Rect> tileClips;
+	Texture::cutSprites(iceBlocks, &tileClips);
+
+	//Create Terrain vector
+	vector <Texture> mapTerrain = Texture::CreateTextureVector(tileClips, "level1.txt", iceBlocks);
+
+	//mario starts at 100,100, with velocity speed 2.
+	Creature* mario = &Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 2);
+	mario->w = 16;
+	mario->h = 27;
+
+	//background scroll speed
+	double background_x = 0;
 
 	SDL_Event e;
 
@@ -67,35 +74,32 @@ int main(int argc, char **argv)
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_UP:
-					if (mario.y < MOVEMENT){
-						mario.y = 0;
-					}
-					else{
-						mario.y -= MOVEMENT;
-					}
+					mario->jumping = true;
 					break;
 				case SDLK_DOWN:
-					if ((mario.y + mario.h) >= (SCREEN_HEIGHT - MOVEMENT)){
-						mario.y = (SCREEN_HEIGHT - mario.h);
-					}
-					else{
-						mario.y += 3;
-					}
+					if ((mario->y + mario->h) >= (SCREEN_HEIGHT - mario->velocity))
+						mario->y = (SCREEN_HEIGHT - mario->h);
+					else
+						mario->y += mario->velocity;
 					break;
 				case SDLK_LEFT:
-					if (mario.x < MOVEMENT){
-						mario.x = 0;
-					}
-					else{
-						mario.x -= MOVEMENT;
+					if (mario->x < mario->velocity)
+						mario->x = 0;
+					else if(background_x < 0)
+					{
+						OFFSET++;
+						background_x++;
 					}
 					break;
 				case SDLK_RIGHT:
-					if ((mario.x + mario.w)>(SCREEN_WIDTH - MOVEMENT)){
-						mario.x = (SCREEN_WIDTH - mario.w);
+					if ((mario->x + mario->w) > (SCREEN_WIDTH - mario->velocity) )
+					{
+						mario->x = (SCREEN_WIDTH - mario->w);
 					}
-					else{
-						mario.x += 3;
+					else if(background_x <= 0)
+					{
+						OFFSET--;
+						background_x--;
 					}
 					break;
 				default:
@@ -105,19 +109,14 @@ int main(int argc, char **argv)
 		}
 		// Clear the screen.
 		SDL_RenderClear(renderer);
-		Texture::RenderTexture(background_texture, renderer, 0, 0);
+		//Render background.
+		Texture::RenderTexture(background_texture, renderer, background_x, 0);	
 
-		for (int i = 0; i < NUMBER_OF_BLOCKS; i++)
-		{
-			Texture::RenderTexture(blocks[i].texture, renderer, blocks[i].x, blocks[i].y);
-			//Block(blocks, x, y);
-		}
 		// Draw mario at the (x, y) location.
-		Texture::RenderTexture(mario.texture, renderer, mario.x, mario.y);
-		Texture::RenderTexture(koopa_texture, renderer, 300, 200);
+		Texture::RenderMario(renderer, mario, &mapTerrain);
 
-
-
+		//Render the map terrain
+		Texture::RenderAllTerrain(mapTerrain, renderer, OFFSET);
 
 		// Print the screen.
 		SDL_RenderPresent(renderer);

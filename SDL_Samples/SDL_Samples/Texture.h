@@ -1,17 +1,38 @@
+#ifndef CREATURE
+#define CREATURE
+
 #include <iostream>
-#include <string>
 #include <SDL_image.h>
-#ifndef TEXTURE
-#define TEXTURE
+#include <vector>
+#include "Creature.h"
+
+
 using namespace std;
 
-class Texture{
+class Creature;
+
+class Texture
+{
 public:
+	static void Texture::cutSprites(SDL_Texture *spriteSheet, vector <SDL_Rect>* spriteClips);
 	static SDL_Texture* LoadTexture(const string &file, SDL_Renderer *renderer);
-	static void RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h);
-	static void RenderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
+	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h);
+	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip = nullptr);
+	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip = nullptr);
+	static vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fileName, SDL_Texture* spriteSheet);
+	static void Texture::RenderAllTerrain(vector <Texture> Terrain, SDL_Renderer *renderer, double offset);
+	static void Texture::RenderMario(SDL_Renderer *renderer, Creature* mario, vector <Texture>* Terrain);
+	int Texture::getY();
+	int Texture::getX();
+	int Texture::getW();
+	int Texture::getH();
 private:
 	int x;
 	int y;
+	int w;
+	int h;
+	SDL_Rect Clip;
+	SDL_Texture* spriteSheet;
 };
-#endif TEXTURE
+
+#endif
