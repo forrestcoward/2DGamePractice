@@ -112,9 +112,6 @@ void PlayMusic()
 	// Loop the music forever.
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 3);
 	int r = Mix_PlayMusic(music, -1);
-	cout << r << endl;
-	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(music, -1);
-	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(music, -1);
 
 	// Play a wav.
 	// Mix_Chunk* sound = Mix_LoadWAV("../sounds/bird.wav");
