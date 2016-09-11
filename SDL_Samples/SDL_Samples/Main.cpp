@@ -8,6 +8,7 @@
 #include <vector>
 
 // SDL includes.
+// See https://www.libsdl.org/
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -73,7 +74,7 @@ char* GetEnvironmentVariable(const char * environmentVariable)
 
 string GetRandomMp3File()
 {
-	Poco::Path p("../sounds/mp3", Poco::Path::Style::PATH_WINDOWS);
+	Poco::Path p("../sounds/midi", Poco::Path::Style::PATH_WINDOWS);
 	Poco::DirectoryIterator dirIterator(p);
 	Poco::DirectoryIterator end;
 	std::vector<std::string> files;
@@ -88,7 +89,9 @@ string GetRandomMp3File()
 	}
 
 	// Choose a random file to play a different song each time.
-	int randomIndex = rand() % files.size();
+	srand(time(NULL)); // Initialize random seed.
+	int random = rand();
+	int randomIndex = random % files.size();
 	string musicToPlay = files[randomIndex];
 	cout << "Playing music '" << musicToPlay << "'" << endl;
 	return musicToPlay;
@@ -103,11 +106,14 @@ void PlayMusic()
 	// Double check we set the variable correctly.
 	cout << timidity << endl;
 
-	Mix_OpenAudio(22050, AUDIO_S16SYS, MIX_DEFAULT_CHANNELS, 4096);
+	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
 	string musicToPlay = GetRandomMp3File();
 	Mix_Music *music = Mix_LoadMUS(musicToPlay.c_str());
 	// Loop the music forever.
-	Mix_PlayMusic(music, -1);
+	int r = Mix_PlayMusic(music, -1);
+	cout << r << endl;
+	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(music, -1);
+	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(music, -1);
 
 	// Play a wav.
 	// Mix_Chunk* sound = Mix_LoadWAV("../sounds/bird.wav");
