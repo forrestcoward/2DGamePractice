@@ -1,13 +1,23 @@
 #include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string>
-#include "Texture.h"
-#include "Creature.h"
 #include <cstdlib>
 #include <time.h>
+#include <string>
+#include <tchar.h>
 #include <vector>
+#include <windows.h>
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+
+#include "Texture.h"
+#include "Creature.h"
+
 using namespace std;
+
 double OFFSET = 0;
 const int MARIO_WIDTH = 16;
 const int MARIO_HEIGHT = 27;
@@ -19,9 +29,66 @@ const int MARIO_STARTING_X = 100;
 const int MARIO_STARTING_Y = SCREEN_HEIGHT - 32;
 int MARIO_STARTING_SPEED = 5;
 const char* SCREEN_TITLE = "Sample";
+
+// Sets an environment variables value.
+void SetEnvironmentVarible(char* environmentVariable, char* value)
+{
+	_putenv_s(environmentVariable, value);
+}
+
+// Gets the value of an environment variable.
+// If it does not exist, write a message to the console and exit with an error.
+char* GetEnvironmentVariable(const char * environmentVariable)
+{
+	char* variable;
+	size_t requiredSize;
+
+	// Get the size of the environment variable.
+	getenv_s(&requiredSize, NULL, 0, environmentVariable);
+
+	// Error out if it does not exist.
+	if (requiredSize == 0)
+	{
+		printf("Environment variable %s does not exist", environmentVariable);
+		exit(1);
+	}
+
+	// Allocate space to store the value of the environment variable.
+	variable = (char*)malloc(requiredSize * sizeof(char));
+	// Get the actual environment variable.
+	getenv_s(&requiredSize, variable, requiredSize, environmentVariable);
+
+	return variable;
+}
+
+char* GetRandomMp3File()
+{
+	return NULL;
+}
+
+void PlayMusic()
+{
+	// This is required if you want SDL_Mixer to be able to play .mid files.
+	// We must point the TIMIDITY_CFG environment variable to the timidity download location.
+	SetEnvironmentVarible("TIMIDITY_CFG", "../timidity");
+	char* timidity = GetEnvironmentVariable("TIMIDITY_CFG");
+	// Double check we set the variable correctly.
+	cout << timidity << endl;
+
+	Mix_OpenAudio(22050, AUDIO_S16SYS, MIX_DEFAULT_CHANNELS, 4096);
+	Mix_Music *music = Mix_LoadMUS("../sounds/mp3/honeybloom-galaxy.mp3");
+	// Loop the music forever.
+	Mix_PlayMusic(music, -1);
+
+	// Play a wav.
+	// Mix_Chunk* sound = Mix_LoadWAV("../sounds/bird.wav");
+	// Mix_PlayChannel(-1, music, 0);
+}
+
 int main(int argc, char **argv)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	PlayMusic();
 
 	// Create the window we will draw on.
 	SDL_Window* window = SDL_CreateWindow(SCREEN_TITLE, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -53,8 +120,6 @@ int main(int argc, char **argv)
 	Creature* mario = &Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 5);
 	mario->w = MARIO_WIDTH;
 	mario->h = MARIO_HEIGHT;
-
-
 
 	//background scroll speed
 	double background_x = 0;
