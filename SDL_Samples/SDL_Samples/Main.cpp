@@ -106,10 +106,11 @@ void PlayMusic()
 	// Double check we set the variable correctly.
 	cout << timidity << endl;
 
-	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+	Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 640);
 	string musicToPlay = GetRandomMp3File();
 	Mix_Music *music = Mix_LoadMUS(musicToPlay.c_str());
 	// Loop the music forever.
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 3);
 	int r = Mix_PlayMusic(music, -1);
 	cout << r << endl;
 	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(music, -1);
