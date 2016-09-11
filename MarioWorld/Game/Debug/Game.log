@@ -1,0 +1,11 @@
+﻿  Texture.cpp
+d:\repos\2dgamepractice\marioworld\game\texture.cpp(144): warning C4018: '<': signed/unsigned mismatch
+d:\repos\2dgamepractice\marioworld\game\texture.cpp(146): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Main.cpp
+d:\repos\2dgamepractice\marioworld\game\main.cpp(92): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\repos\2dgamepractice\marioworld\game\main.cpp(212): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Creature.cpp
+d:\repos\2dgamepractice\marioworld\game\creature.cpp(23): warning C4018: '<': signed/unsigned mismatch
+d:\repos\2dgamepractice\marioworld\game\creature.cpp(50): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  Game.vcxproj -> D:\Repos\2DGamePractice\MarioWorld\Debug\Game.exe
