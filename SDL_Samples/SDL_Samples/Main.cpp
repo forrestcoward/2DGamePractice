@@ -1,4 +1,3 @@
-#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -7,12 +6,23 @@
 #include <string>
 #include <tchar.h>
 #include <vector>
-#include <windows.h>
 
+// SDL includes.
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
+// Poco includes.
+// We use Poco to avoid dealing with awful file system utilities provided to us by C++.
+// See http://pocoproject.org/
+#include <Poco\File.h>
+#include "Poco/FileStream.h"
+#include <Poco\Path.h>
+#include <Poco\DirectoryIterator.h>
+
+#include <iostream>
+
+// Our own includes.
 #include "Texture.h"
 #include "Creature.h"
 
@@ -61,9 +71,28 @@ char* GetEnvironmentVariable(const char * environmentVariable)
 	return variable;
 }
 
-char* GetRandomMp3File()
+string GetRandomMp3File()
 {
-	return NULL;
+	Poco::Path p("D:/Repos/2DGamePractice/SDL_Samples/sounds/mp3", Poco::Path::Style::PATH_WINDOWS);
+	cout << p.current() << endl;
+	Poco::DirectoryIterator dirIterator(p);
+	Poco::DirectoryIterator end;
+	std::vector<std::string> files;
+	std::string file;
+
+	// Get all the files in the mp3 directory.
+	while (dirIterator != end)
+	{
+		file = dirIterator->path();
+		++dirIterator;
+		files.push_back(file);
+	}
+
+	// Choose a random file to play a different song each time.
+	int randomIndex = rand() % files.size();
+	string musicToPlay = files[randomIndex];
+	cout << "Playing music '" << musicToPlay << "'" << endl;
+	return musicToPlay;
 }
 
 void PlayMusic()
@@ -76,7 +105,8 @@ void PlayMusic()
 	cout << timidity << endl;
 
 	Mix_OpenAudio(22050, AUDIO_S16SYS, MIX_DEFAULT_CHANNELS, 4096);
-	Mix_Music *music = Mix_LoadMUS("../sounds/mp3/honeybloom-galaxy.mp3");
+	string musicToPlay = GetRandomMp3File();
+	Mix_Music *music = Mix_LoadMUS(musicToPlay.c_str());
 	// Loop the music forever.
 	Mix_PlayMusic(music, -1);
 
