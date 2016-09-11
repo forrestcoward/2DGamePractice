@@ -73,8 +73,7 @@ char* GetEnvironmentVariable(const char * environmentVariable)
 
 string GetRandomMp3File()
 {
-	Poco::Path p("D:/Repos/2DGamePractice/SDL_Samples/sounds/mp3", Poco::Path::Style::PATH_WINDOWS);
-	cout << p.current() << endl;
+	Poco::Path p("../sounds/mp3", Poco::Path::Style::PATH_WINDOWS);
 	Poco::DirectoryIterator dirIterator(p);
 	Poco::DirectoryIterator end;
 	std::vector<std::string> files;
