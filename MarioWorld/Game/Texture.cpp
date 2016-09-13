@@ -22,10 +22,10 @@ SDL_Texture* Texture::LoadTexture(const string &file, SDL_Renderer *renderer)
 /*
  * Renders a texture onto a renderer with a specified width and height.
  */
-void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
+void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
 {
 	SDL_Rect dst;
-	dst.x = x;
+	dst.x = x - camera.x;
 	dst.y = y;
 	dst.h = h;
 	dst.w = w;
@@ -35,10 +35,10 @@ void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x,
 /*
 * Renders a clip of a texture.
 */
-void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip)
+void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip)
 {
 	SDL_Rect dst;
-	dst.x = x;
+	dst.x = x - camera.x; 
 	dst.y = y;
 	if (clip != nullptr)
 	{
@@ -48,13 +48,13 @@ void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x,
 	else
 		SDL_QueryTexture(texture, NULL, NULL, &dst.w ,&dst.h);
 
-	RenderTexture(texture, renderer, dst, clip);
+	RenderTexture(camera, texture, renderer, dst, clip);
 }
 
 /* 
-*Renders a clipped texture.
+* Renders a clipped texture.
 */ 
-void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip)
+void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip)
 {
 	SDL_RenderCopy(renderer, texture, clip, &dst);
 }
@@ -139,13 +139,15 @@ int Texture::getH()
 	return this->h;
 }
 
-void Texture::RenderAllTerrain(vector <Texture> Terrain, SDL_Renderer *renderer, double offset)
+/*
+void Texture::RenderAllTerrain(SDL_Rect camera, vector <Texture> Terrain, SDL_Renderer *renderer, double offset)
 {
 	for (int i = 0; i < Terrain.size(); i++)
 	{
-		Texture::RenderTexture(Terrain[i].spriteSheet, renderer, Terrain[i].x + offset, Terrain[i].y, &Terrain[i].Clip);
+		Texture::RenderTexture(camera, Terrain[i].spriteSheet, renderer, Terrain[i].x + offset, Terrain[i].y, &Terrain[i].Clip);
 	}
 }
+*/
 
 // Return y
 int Texture::getY()

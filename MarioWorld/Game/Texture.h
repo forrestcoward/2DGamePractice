@@ -16,11 +16,11 @@ class Texture
 public:
 	static void Texture::cutSprites(SDL_Texture *spriteSheet, vector <SDL_Rect>* spriteClips);
 	static SDL_Texture* LoadTexture(const string &file, SDL_Renderer *renderer);
-	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h);
-	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip = nullptr);
-	static void Texture::RenderTexture(SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip = nullptr);
+	static void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h);
+	static void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, SDL_Rect *clip = nullptr);
+	static void Texture::RenderTexture(SDL_Rect camera, SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip = nullptr);
 	static vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fileName, SDL_Texture* spriteSheet);
-	static void Texture::RenderAllTerrain(vector <Texture> Terrain, SDL_Renderer *renderer, double offset);
+	// static void Texture::RenderAllTerrain(SDL_Rect camera, vector * <Texture> Terrain, SDL_Renderer *renderer);
 	int Texture::getY();
 	int Texture::getX();
 	int Texture::getW();

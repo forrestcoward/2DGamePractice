@@ -158,8 +158,9 @@ int main(int argc, char **argv)
 	double background_x = 0;
 
 	SDL_Event e;
-
 	bool running = true;
+
+	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	while (running)
 	{
@@ -177,45 +178,51 @@ int main(int argc, char **argv)
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_UP:
-					mario->jump(&mapTerrain);
+					//mario->jump(&mapTerrain);
+					mario->y -= 10;
+					break;
+				case SDLK_DOWN:
+					mario->y += 10;
 					break;
 				case SDLK_LEFT:
-					if (mario->x < mario->velocity)
-						mario->x = 0;
-					else if(background_x < 0)
-					{
-						OFFSET += MARIO_STARTING_SPEED;
-						background_x += MARIO_STARTING_SPEED;
-					}
+					mario->x -= 10;
 					break;
 				case SDLK_RIGHT:
-					if ((mario->x + mario->w) > (SCREEN_WIDTH - mario->velocity) )
-					{
-						mario->x = (SCREEN_WIDTH - mario->w);
-					}
-					else if(background_x <= 0)
-					{
-						OFFSET -= MARIO_STARTING_SPEED;
-						background_x -= MARIO_STARTING_SPEED;
-					}
+					mario->x += 10;
 					break;
 				default:
 					break;
 				}
 			}
 		}
+
+		if (mario->x < SCREEN_WIDTH / 2)
+		{
+			camera.x = 0;
+		}
+		else if (mario->x > BACKGROUND_WIDTH - SCREEN_WIDTH / 2)
+		{
+			camera.x = BACKGROUND_WIDTH - SCREEN_WIDTH;
+		}
+		else
+		{
+			camera.x = mario->x - SCREEN_WIDTH / 2;
+		}
+
 		mario->jumpAdjust();
 		mario->checkLand(&mapTerrain);
 		// Clear the screen.
 		SDL_RenderClear(renderer);
-		//Render background.
-		Texture::RenderTexture(background_texture, renderer, background_x, 0);	
+
+		Texture::RenderTexture(camera, background_texture, renderer, 0, 0);	
+
+		Texture::RenderTexture(camera, mario->texture, renderer, 100, 100);
 
 		// Draw mario at the (x, y) location.
-		Texture::RenderTexture(mario->texture, renderer, mario->x, mario->y);
+		Texture::RenderTexture(camera, mario->texture, renderer, mario->x, mario->y);
 
 		//Render the map terrain
-		Texture::RenderAllTerrain(mapTerrain, renderer, OFFSET);
+		// Texture::RenderAllTerrain(mapTerrain, renderer, OFFSET);
 
 		// Print the screen.
 		SDL_RenderPresent(renderer);
@@ -225,4 +232,32 @@ int main(int argc, char **argv)
 	SDL_Quit();
 	return 0;
 }
+
+
+// GameObject
+// -> x
+// -> y
+// -> Texture
+// Render
+
+
+// AnimatedGameObject : GameObject (Inheritence)
+// if mario is jumping -> set the texture to jumping
+// How do I update my animations?
+// Render
+// base.Render
+// override Render 
+
+
+// AnimatedGameObject (Composition)
+// -> GameObject
+// -> GameObject->x
+// -> GameObject->y
+// -> GameObject->Render
+
+
+
+
+// RenderGame( list of GameObject )
+
 
