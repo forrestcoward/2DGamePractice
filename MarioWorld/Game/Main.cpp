@@ -38,7 +38,7 @@ const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
 const int MARIO_STARTING_X = 100;
 const int MARIO_STARTING_Y = SCREEN_HEIGHT - 32;
-int MARIO_STARTING_SPEED = 5;
+int MARIO_STARTING_VELOCITY = 5;
 const char* SCREEN_TITLE = "Mario World";
 
 // Sets an environment variables value.
@@ -150,9 +150,12 @@ int main(int argc, char **argv)
 	vector <Texture> mapTerrain = Texture::CreateTextureVector(tileClips, "level1.txt", iceBlocks);
 
 	//mario starts at 100,100, with velocity speed 5.
-	Creature* mario = &Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 5);
+	Creature* mario =  new Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 0, "mario");
 	mario->w = MARIO_WIDTH;
 	mario->h = MARIO_HEIGHT;
+
+	//Set mario's animations
+	mario->setClips(renderer);
 
 	//background scroll speed
 	double background_x = 0;
@@ -178,53 +181,50 @@ int main(int argc, char **argv)
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_UP:
-					//mario->jump(&mapTerrain);
-					mario->y -= 10;
-					break;
-				case SDLK_DOWN:
-					mario->y += 10;
+					mario->jump(&mapTerrain);
+					//mario->y += mario->velocity;
 					break;
 				case SDLK_LEFT:
-					mario->x -= 10;
+					mario->velocity = -MARIO_STARTING_VELOCITY;
+					mario->updateDirection(false);
+					mario->updateAnimation();
+					mario->move();
 					break;
 				case SDLK_RIGHT:
-					mario->x += 10;
+					mario->velocity = MARIO_STARTING_VELOCITY;
+					mario->updateDirection(true);
+					mario->updateAnimation();
+					mario->move();
 					break;
 				default:
 					break;
 				}
 			}
+			else
+			{
+				mario->velocity = 0;
+				mario->updateAnimation();
+			}
 		}
 
-		if (mario->x < SCREEN_WIDTH / 2)
-		{
-			camera.x = 0;
-		}
-		else if (mario->x > BACKGROUND_WIDTH - SCREEN_WIDTH / 2)
-		{
-			camera.x = BACKGROUND_WIDTH - SCREEN_WIDTH;
-		}
-		else
-		{
-			camera.x = mario->x - SCREEN_WIDTH / 2;
-		}
-
+		Texture::moveCamera(&camera, mario);
 		mario->jumpAdjust();
 		mario->checkLand(&mapTerrain);
+		mario->checkMarioBorders();
+
 		// Clear the screen.
 		SDL_RenderClear(renderer);
 
-		Texture::RenderTexture(camera, background_texture, renderer, 0, 0);	
-
-		Texture::RenderTexture(camera, mario->texture, renderer, 100, 100);
+		//Draw background
+		Texture::RenderTexture(&camera, background_texture, renderer, 0, 0);	
 
 		// Draw mario at the (x, y) location.
-		Texture::RenderTexture(camera, mario->texture, renderer, mario->x, mario->y);
+		Texture::RenderTexture(&camera, mario->texture, renderer, mario->x, mario->y);
 
-		//Render the map terrain
-		// Texture::RenderAllTerrain(mapTerrain, renderer, OFFSET);
+		//Draw the map terrain
+		Texture::RenderAllTerrain(&camera, &mapTerrain, renderer);
 
-		// Print the screen.
+		//Draw the screen.
 		SDL_RenderPresent(renderer);
 	}
 	SDL_DestroyTexture(mario_texture);
