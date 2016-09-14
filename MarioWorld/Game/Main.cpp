@@ -89,7 +89,7 @@ string GetRandomMp3File()
 	}
 
 	// Choose a random file to play a different song each time.
-	srand(time(NULL)); // Initialize random seed.
+	srand((unsigned int) time(NULL)); // Initialize random seed.
 	int random = rand();
 	int randomIndex = random % files.size();
 	string musicToPlay = files[randomIndex];

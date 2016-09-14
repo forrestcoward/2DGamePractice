@@ -26,7 +26,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 //Checks if this creature is on the ground
 bool Creature::isCollidingBelow(vector <Texture>* Terrain)
 {
-	for (int i = 0; i < Terrain->size(); i++)
+	for (unsigned int i = 0; i < Terrain->size(); i++)
 	{
 		if ((y + h >= (*Terrain)[i].getY()) && (((x + w < (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x + w) > ((*Terrain)[i].getX()) || (x < (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x  > ((*Terrain)[i].getX())))
 		{
@@ -55,7 +55,7 @@ void Creature::jumpAdjust()
 {
 	if (jumping)
 	{
-		y += verticalVelocity;
+		y += (int) verticalVelocity;
 		verticalVelocity += gravity;
 	}
 }
