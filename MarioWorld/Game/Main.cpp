@@ -27,8 +27,10 @@
 #include "Texture.h"
 #include "Creature.h"
 
+
 using namespace std;
 
+#pragma region constantGlobals
 double OFFSET = 0;
 const int MARIO_WIDTH = 16;
 const int MARIO_HEIGHT = 27;
@@ -38,8 +40,9 @@ const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
 const int MARIO_STARTING_X = 100;
 const int MARIO_STARTING_Y = SCREEN_HEIGHT - 32;
-int MARIO_STARTING_VELOCITY = 5;
+const int MARIO_STARTING_VELOCITY = 5;
 const char* SCREEN_TITLE = "Mario World";
+#pragma endregion
 
 // Sets an environment variables value.
 void SetEnvironmentVarible(char* environmentVariable, char* value)
@@ -120,45 +123,24 @@ void PlayMusic()
 
 int main(int argc, char **argv)
 {
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	PlayMusic();
-
 	// Create the window we will draw on.
 	SDL_Window* window = SDL_CreateWindow(SCREEN_TITLE, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
 	// Create the renderer. This will draw to the window.
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-	// Create the mario texture.
-	SDL_Texture* mario_texture = Texture::LoadTexture("../images/mario_right_still.png", renderer);
-
+	//Initialize map terrain 
+	vector <Texture>* mapTerrain = new vector <Texture>();
 	// Create background texture.
-	SDL_Texture* background_texture = Texture::LoadTexture("../images/backgrounds/Icy_Background.png", renderer);
-
-	// Create yellow block texture.
-	SDL_Texture* block_texture = Texture::LoadTexture("../images/items/Question_Block_0.png", renderer);
-
+	SDL_Texture* backgroundTexture = Texture::LoadTexture("../images/backgrounds/Icy_Background.png", renderer);
 	//Load icy tiles.
 	SDL_Texture* iceBlocks;
 	iceBlocks = Texture::LoadTexture("../images/tiles/Icy_Tiles.png", renderer);
-
 	//Setup the clips for our image
-	vector <SDL_Rect> tileClips;
-	Texture::cutSprites(iceBlocks, &tileClips);
-
+	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	vector <Texture> mapTerrain = Texture::CreateTextureVector(tileClips, "level1.txt", iceBlocks);
-
-	//mario starts at 100,100, with velocity speed 5.
-	Creature* mario =  new Creature(mario_texture, MARIO_STARTING_X, MARIO_STARTING_Y, 0, "mario");
-	mario->w = MARIO_WIDTH;
-	mario->h = MARIO_HEIGHT;
-
-	//Set mario's animations
-	mario->setClips(renderer);
-
-	//background scroll speed
-	double background_x = 0;
+	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, backgroundTexture, renderer);
 
 	SDL_Event e;
 	bool running = true;
@@ -172,7 +154,7 @@ int main(int argc, char **argv)
 			if (e.type == SDL_QUIT)
 			{
 				running = false;
-			}
+			}  
 
 			// If a key was pressed.
 			if (e.type == SDL_KEYDOWN)
@@ -180,9 +162,8 @@ int main(int argc, char **argv)
 				// Detect which key was pressed.
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_UP:
-					mario->jump(&mapTerrain);
-					//mario->y += mario->velocity;
+				case SDLK_SPACE:
+					mario->jump(mapTerrain);
 					break;
 				case SDLK_LEFT:
 					mario->velocity = -MARIO_STARTING_VELOCITY;
@@ -209,25 +190,18 @@ int main(int argc, char **argv)
 
 		Texture::moveCamera(&camera, mario);
 		mario->jumpAdjust();
-		mario->checkLand(&mapTerrain);
-		mario->checkMarioBorders();
+		mario->checkLand(mapTerrain);
+		mario->checkBorders();
 
 		// Clear the screen.
 		SDL_RenderClear(renderer);
 
-		//Draw background
-		Texture::RenderTexture(&camera, background_texture, renderer, 0, 0);	
+		//Draw all textures
+		Texture::renderAllTextures(&camera, backgroundTexture, mario, mapTerrain, renderer);
 
-		// Draw mario at the (x, y) location.
-		Texture::RenderTexture(&camera, mario->texture, renderer, mario->x, mario->y);
-
-		//Draw the map terrain
-		Texture::RenderAllTerrain(&camera, &mapTerrain, renderer);
-
-		//Draw the screen.
 		SDL_RenderPresent(renderer);
 	}
-	SDL_DestroyTexture(mario_texture);
+	SDL_DestroyTexture(mario->texture);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;
@@ -255,9 +229,5 @@ int main(int argc, char **argv)
 // -> GameObject->y
 // -> GameObject->Render
 
-
-
-
-// RenderGame( list of GameObject )
 
 

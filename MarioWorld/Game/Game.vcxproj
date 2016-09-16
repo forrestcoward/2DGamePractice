@@ -47,6 +47,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\SDL\include;..\..\Poco\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>false</CompileAsManaged>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,11 +77,15 @@
   <ItemGroup>
     <ClInclude Include="..\Game\Creature.h" />
     <ClInclude Include="..\Game\Texture.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Monster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Game\Creature.cpp" />
     <ClCompile Include="..\Game\Main.cpp" />
     <ClCompile Include="..\Game\Texture.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Monster.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

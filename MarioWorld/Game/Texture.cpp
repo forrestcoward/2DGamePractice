@@ -21,7 +21,7 @@ SDL_Texture* Texture::LoadTexture(const string &file, SDL_Renderer *renderer)
 }
 
 /*
- * Renders a texture onto a renderer with a specified width and height.
+ * Renders a texture onto the screen with a specified width and height.
  */
 void Texture::RenderTexture(SDL_Rect* camera, SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
 {
@@ -63,8 +63,9 @@ void Texture::RenderTexture(SDL_Rect* camera, SDL_Texture *texture, SDL_Renderer
 /*
 * Cuts up the spritesheet.
 */
-void Texture::cutSprites(SDL_Texture* spriteSheet, vector <SDL_Rect>* spriteClips)
+vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 {
+	vector <SDL_Rect>* spriteClips = new vector <SDL_Rect>();
 	SDL_Rect tempClip;
 	for (int i = 0; i < 6; i++)
 	{
@@ -77,14 +78,17 @@ void Texture::cutSprites(SDL_Texture* spriteSheet, vector <SDL_Rect>* spriteClip
 			spriteClips->push_back(tempClip);
 		}	
 	}
+
+	return spriteClips;
 }
 
-vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fileName, SDL_Texture* spriteSheet)
+//Return vector of level terrain textures
+Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture>* mapTerrain, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
 {
+	Creature* mario = NULL;
 	int currentX = 0;
 	int currentY = SCREEN_HEIGHT - 32;
 	char currentCharacter;
-	vector <Texture> Terrain;
 	ifstream levelFile;
 	levelFile.open(fileName);
 
@@ -95,22 +99,31 @@ vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fi
 			Texture newTerrain;
 			newTerrain.x = currentX;
 			newTerrain.y = currentY;
-			newTerrain.h = clips[0].h;
-			newTerrain.w = clips[0].w;
-			newTerrain.Clip = clips[0];
+			newTerrain.h = (*clips)[0].h;
+			newTerrain.w = (*clips)[0].w;
+			newTerrain.Clip = (*clips)[0];
 			newTerrain.spriteSheet = spriteSheet;
-			Terrain.push_back(newTerrain);
+			mapTerrain->push_back(newTerrain);
 		}
 		else if (currentCharacter == 'b')
 		{
 			Texture newTerrain;
 			newTerrain.x = currentX;
 			newTerrain.y = currentY;
-			newTerrain.h = clips[1].h;
-			newTerrain.w = clips[1].w;
-			newTerrain.Clip = clips[1];
+			newTerrain.h = (*clips)[1].h;
+			newTerrain.w = (*clips)[1].w;
+			newTerrain.Clip = (*clips)[1];
 			newTerrain.spriteSheet = spriteSheet;
-			Terrain.push_back(newTerrain);
+			mapTerrain->push_back(newTerrain);
+		}
+		else if (currentCharacter == 'm')
+		{
+			SDL_Texture* marioTexture = Texture::LoadTexture("../images/mario_right_still.png", renderer);
+			mario = new Creature(marioTexture, currentX, currentY, 0, "mario", renderer);
+			mario->w = 16;
+			mario->h = 27;
+			mario->setClips(renderer);
+			mario->ability = "none";
 		}
 		else if (currentCharacter == '#')
 		{
@@ -125,7 +138,7 @@ vector <Texture> Texture::CreateTextureVector(vector<SDL_Rect>& clips, string fi
 			
 	}
 
-	return Terrain;
+	return mario;
 }
 
 //Return w
@@ -141,14 +154,13 @@ int Texture::getH()
 }
 
 //Renders terrain
-void Texture::RenderAllTerrain(SDL_Rect* camera, vector <Texture>* Terrain, SDL_Renderer *renderer)
+void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture>* Terrain, SDL_Renderer *renderer)
 {
 	for (int i = 0; i < Terrain->size(); i++)
 	{
 		Texture::RenderTexture(camera, (*Terrain)[i].spriteSheet, renderer, (*Terrain)[i].x, (*Terrain)[i].y, &(*Terrain)[i].Clip);
 	}
 }
-
 
 // Return y
 int Texture::getY()
@@ -177,4 +189,13 @@ void Texture::moveCamera(SDL_Rect* camera, Creature* mario)
 		{
 			camera->x = mario->x - SCREEN_WIDTH / 2;
 		}
+}
+
+//Render all textures
+void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture, Creature* mario, vector <Texture>* mapTerrain, SDL_Renderer* renderer)
+{
+	Texture::RenderTexture(camera, backgroundTexture, renderer, 0, 0);
+	Texture::renderAllTerrain(camera, mapTerrain, renderer);
+	Texture::RenderTexture(camera, mario->texture, renderer, mario->x, mario->y);
+	SDL_RenderPresent(renderer);
 }

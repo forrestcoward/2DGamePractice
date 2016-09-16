@@ -4,17 +4,50 @@
 #include <vector>
 #include "Creature.h"
 
+
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
 const int BACKGROUND_WIDTH = 960;
 
-Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name)
+class Texture;
+
+class Animation;
+
+//Default Constructor
+Creature::Creature()
 {
-	animationFrame = 0;
+
+}
+
+
+Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
+{
+	characterAnimation = new Animation(name, 4, renderer);
+	animationTicker = 0;
 	facingRight = true;
+	animationFrame = 0;
 	this->name = name;
 	jumping = false;
-	gravity = .5;
+	gravity = 1;
+	this->texture = texture;
+	this->x = x;
+	this->y = y;
+	this->velocity = velocity;
+	verticalVelocity = 0;
+	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+}
+
+//Constructor
+Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name)
+{
+	//characterAnimation = animation;
+	animationTicker = 0;
+	facingRight = true;
+	animationFrame = 0;
+	//characterAnimation->facingRight = true;
+	this->name = name;
+	jumping = false;
+	gravity = 1;
 	this->texture = texture;
 	this->x = x;
 	this->y = y;
@@ -28,7 +61,7 @@ bool Creature::isCollidingBelow(vector <Texture>* Terrain)
 {
 	for (int i = 0; i < Terrain->size(); i++)
 	{
-		if ((y + h >= (*Terrain)[i].getY()) && (((x + w < (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x + w) > ((*Terrain)[i].getX()) || (x < (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x  > ((*Terrain)[i].getX())))
+		if ((y + h >= (*Terrain)[i].getY()) && (((x + w <= (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x + w) >= ((*Terrain)[i].getX()) || (x <= (*Terrain)[i].getX() + (*Terrain)[i].getW())) && (x  >= ((*Terrain)[i].getX())))
 		{
 			y = (*Terrain)[i].getY() - h;
 			return true;
@@ -44,7 +77,7 @@ void Creature::jump(vector <Texture>* Terrain)
 	if (Creature::isCollidingBelow(Terrain) && !jumping)
 	{
 		jumping = true;
-		verticalVelocity = -9;
+		verticalVelocity = -12;
 		updateAnimation();
 	}
 	//else do nothing
@@ -73,7 +106,7 @@ void Creature::checkLand(vector <Texture>* Terrain)
 }
 
 //Stop mario at screen edges
-void Creature::checkMarioBorders()
+void Creature::checkBorders()
 {
 	if (x <= 0)
 	{
@@ -88,21 +121,21 @@ void Creature::checkMarioBorders()
 //initialize 
 void Creature::setClips(SDL_Renderer* renderer)
 {
-	clipsLeft = new vector <SDL_Texture*>();
-	clipsRight = new vector <SDL_Texture*>();
+	leftClips = new vector <SDL_Texture*>();
+	rightClips = new vector <SDL_Texture*>();
 	if (name == "mario")
 	{
 		//Set right clips
-		clipsRight->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
-		clipsRight->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
-		clipsRight->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
-		clipsRight->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
+		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
+		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
+		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
+		rightClips->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
 		
 		//Set left clips
-		clipsLeft->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
-		clipsLeft->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
-		clipsLeft->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
-		clipsLeft->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
+		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
+		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
+		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
+		leftClips->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
 	}
 }
 
@@ -112,54 +145,121 @@ void Creature::move()
 	x += velocity;
 }
 
+/*
+////////////////////////////////////////////////
+NEW IMPLEMENTATIONS WITH ANIMATION CLASS USED. COMMENTED-OUT UNTIL HEADER FILE ISSUE RESOLVED.
+////////////////////////////////////////////////
+*/
+
 //Updates creature direction
 void Creature::updateDirection(bool direction)
 {
+	/* Old
 	if (facingRight != direction)
-	{ 
+	{
 		facingRight = direction;
 		velocity = 0;
 	}
-		
+	*/
+	if (characterAnimation->facingRight != direction)
+	{
+		characterAnimation->facingRight = direction;
+		velocity = 0;
+	}
 }
 
-//Update animation
 void Creature::updateAnimation()
 {
 	if (!jumping)
 	{
-		if (velocity < 0 && !facingRight)//Facing left and not standing
+		if (velocity < 0 && !characterAnimation->facingRight && characterAnimation->animationTicker == characterAnimation->animationTickerCap)//Facing left and not standing
 		{
 			animationFrame++;
+			characterAnimation->animationTicker = 0;
 		}
-		else if (velocity > 0 && facingRight)//Facing right and not standing
+		else if (velocity > 0 && characterAnimation->facingRight && characterAnimation->animationTicker == characterAnimation->animationTickerCap)//Facing right and not standing
 		{
 			animationFrame++;
+			characterAnimation->animationTicker = 0;
 		}
 		else
 		{
 			animationFrame = 0;
+			characterAnimation->animationTicker = 0;
 		}
 
-		if (animationFrame == 3)
+		if (animationFrame == 3 && characterAnimation->animationTicker == characterAnimation->animationTickerCap)
+		{
 			animationFrame = 1;
-
-		if (facingRight)
-			texture = (*clipsRight)[animationFrame];
+			characterAnimation->animationTicker = 0;
+		}
 		else
-			texture = (*clipsLeft)[animationFrame];
-		if (texture == NULL)
-			cout << NULL << endl;
+			characterAnimation->animationTicker++;
+
+		if (characterAnimation->facingRight)
+			texture = (*characterAnimation->rightClips)[animationFrame];
+		else
+			texture = (*characterAnimation->leftClips)[animationFrame];
 	}
-	else 
+	else
 	{
-		if (facingRight)
+		if (characterAnimation->facingRight)
 		{
-			texture = (*clipsRight)[3];
+			texture = (*characterAnimation->rightClips)[3];
 		}
 		else
 		{
-			texture = (*clipsLeft)[3];
+			texture = (*characterAnimation->leftClips)[3];
 		}
 	}
 }
+
+//Original update animation
+/*
+void Creature::updateAnimation()
+{
+	if (!jumping)
+	{
+		if (velocity < 0 && !facingRight && animationTicker == 4)//Facing left and not standing
+		{
+			animationFrame++;
+			animationTicker = 0;
+		}
+		else if (velocity > 0 && facingRight && animationTicker == 4)//Facing right and not standing
+		{
+			animationFrame++;
+			animationTicker = 0;
+		}
+		else if(velocity == 0)
+		{
+			animationFrame = 0;
+			animationTicker = 3;
+		}
+
+		if (animationFrame == 3)
+		{
+			animationFrame = 1;
+			animationTicker = 0;
+		}
+		else
+			animationTicker++;
+
+		if (facingRight)
+			texture = (*rightClips)[animationFrame];
+		else
+			texture = (*leftClips)[animationFrame];
+		cout << animationTicker << endl;
+	}
+	else
+	{
+		if (facingRight)
+		{
+			texture = (*rightClips)[3];
+		}
+		else
+		{
+			texture = (*leftClips)[3];
+		}
+	}
+}
+*/
