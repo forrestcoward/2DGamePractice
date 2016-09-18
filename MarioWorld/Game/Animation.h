@@ -1,15 +1,13 @@
-#ifndef TEXTURE
-#define TEXTURE
-
 #include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
 #include "Texture.h"
 
-using namespace std;
+#ifndef ANIMATION
+#define ANIMATION
 
-class Texture;
+using namespace std;
 
 class Animation
 {
@@ -25,4 +23,5 @@ public:
 private:
 	void Animation::setClips(SDL_Renderer* renderer, string name);
 };
+
 #endif

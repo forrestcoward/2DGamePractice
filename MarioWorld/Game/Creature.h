@@ -1,22 +1,17 @@
-#ifndef TEXTURE
-#define TEXTURE
-#ifndef ANIMATION
-#define ANIMATION
+#ifndef CREATURE
+#define CREATURE
 
-
+class Animation;
+class Texture;
 
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
-#include "Texture.h"
 #include "Animation.h"
+#include "Texture.h"
 
 using namespace std;
-
-class Texture;
-
-class Animation;
 
 class Creature
 {
@@ -51,6 +46,5 @@ public:
 	void Creature::move();
 	void Creature::updateDirection(bool direction);
 };
-#endif
-#endif
 
+#endif CREATURE

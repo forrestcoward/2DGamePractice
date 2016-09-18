@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 #include <vector>
 #include "Creature.h"
-
+#include "Animation.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
