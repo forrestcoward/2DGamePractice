@@ -156,7 +156,7 @@ int Texture::getH()
 //Renders terrain
 void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture>* Terrain, SDL_Renderer *renderer)
 {
-	for (int i = 0; i < Terrain->size(); i++)
+	for (unsigned int i = 0; i < Terrain->size(); i++)
 	{
 		Texture::RenderTexture(camera, (*Terrain)[i].spriteSheet, renderer, (*Terrain)[i].x, (*Terrain)[i].y, &(*Terrain)[i].Clip);
 	}
