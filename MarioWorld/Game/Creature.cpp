@@ -9,10 +9,6 @@ const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
 const int BACKGROUND_WIDTH = 960;
 
-class Texture;
-
-class Animation;
-
 //Default Constructor
 Creature::Creature()
 {

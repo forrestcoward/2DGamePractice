@@ -1,5 +1,8 @@
 #ifndef TEXTURE
 #define TEXTURE
+#ifndef ANIMATION
+#define ANIMATION
+
 
 
 #include <iostream>
@@ -48,5 +51,6 @@ public:
 	void Creature::move();
 	void Creature::updateDirection(bool direction);
 };
+#endif
 #endif
 
