@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include "Texture.h"
+#include "Creature.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;

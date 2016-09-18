@@ -8,8 +8,6 @@ class Texture;
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
-#include "Animation.h"
-#include "Texture.h"
 
 using namespace std;
 

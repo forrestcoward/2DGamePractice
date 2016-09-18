@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include "Texture.h"
 
 
 //Deafult constructor

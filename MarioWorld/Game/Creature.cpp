@@ -4,6 +4,7 @@
 #include <vector>
 #include "Creature.h"
 #include "Animation.h"
+#include "Texture.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;

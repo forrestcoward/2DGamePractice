@@ -6,7 +6,6 @@ class Creature;
 #include <iostream>
 #include <SDL_image.h>
 #include <vector>
-#include "Creature.h"
 
 using namespace std;
 
