@@ -125,7 +125,7 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 			mario = new Creature(marioTexture, currentX, currentY, 0, "mario", renderer);
 			mario->w = 16;
 			mario->h = 27;
-			mario->characterAnimation->setClips(renderer, mario->name);
+			mario->characterAnimation->setAnimations(renderer, mario->name);
 		}
 		else if (currentCharacter == 'k')
 		{
@@ -133,7 +133,7 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 			Monster* newKoopa = new Monster(koopaTexture, currentX, currentY, -2, 100, "koopa", renderer);
 			newKoopa->w = 16;
 			newKoopa->h = 27;
-			newKoopa->characterAnimation->setClips(renderer, newKoopa->name);
+			newKoopa->characterAnimation->setAnimations(renderer, newKoopa->name);
 			mapMonsters->push_back(newKoopa);
 		}
 		else if (currentCharacter == '#')

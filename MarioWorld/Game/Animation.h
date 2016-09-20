@@ -18,14 +18,15 @@ public:
 	void Animation::updateMonsterAnimation(int velocity, bool jumping);
 	void Animation::updateDirection(bool direction, int* velocity);
 	void Animation::updateMonsterDirection();
-	void Animation::setClips(SDL_Renderer* renderer, string name);
+	void Animation::setAnimations(SDL_Renderer* renderer, string ability);
 private:
 	bool facingRight;
 	int animationFrame;
 	int animationTicker;
 	int animationTickerCap;
-	vector <SDL_Texture*>* rightClips;
-	vector <SDL_Texture*>*  leftClips;
+	vector <SDL_Texture*>* rightAnimations;
+	vector <SDL_Texture*>* leftAnimations;
+	vector <SDL_Texture*>* abilityAnimations;
 };
 
 #endif

@@ -116,3 +116,14 @@ void Creature::move()
 		x += velocity;
 }
 
+//Set ability
+void Creature::setAbility(string ability) 
+{
+	this->ability = ability;
+}
+
+void Creature::useAbility()
+{
+	//Instantiate new abilityObject
+}
+

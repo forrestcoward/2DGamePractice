@@ -36,6 +36,8 @@ public:
 	void Creature::checkLand(vector <Texture*>* Terrain);
 	void Creature::checkBorders();
 	void Creature::move();
+	void Creature::setAbility(string ability);
+	void Creature::useAbility();
 };
 
 #endif CREATURE

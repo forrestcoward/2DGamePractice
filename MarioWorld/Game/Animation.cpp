@@ -10,7 +10,7 @@ Animation::Animation()
 //Constructor
 Animation::Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Renderer* renderer)
 {
-	Animation::setClips(renderer, name);
+	Animation::setAnimations(renderer, name);
 	this->texture = texture;
 	animationFrame = 0;
 	animationTicker = 0; 
@@ -22,33 +22,33 @@ Animation::Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Rende
 }
 
 //Sets the animation clips
-void Animation::setClips(SDL_Renderer* renderer, string name)
+void Animation::setAnimations(SDL_Renderer* renderer, string name)
 {
-	leftClips = new vector <SDL_Texture*>();
-	rightClips = new vector <SDL_Texture*>();
+	leftAnimations = new vector <SDL_Texture*>();
+	rightAnimations = new vector <SDL_Texture*>();
 	if (name == "mario")
 	{
 		//Set right clips
-		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
-		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
-		rightClips->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
-		rightClips->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
 
 		//Set left clips
-		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
-		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
-		leftClips->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
-		leftClips->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
 	}
 	else if (name == "koopa")
 	{
 		//Set right clips
-		rightClips->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_1.png", renderer));
-		rightClips->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_2.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_1.png", renderer));
+		rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_2.png", renderer));
 
 		//Set left clips
-		leftClips->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer));
-		leftClips->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_2.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer));
+		leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_2.png", renderer));
 	}
 }
 
@@ -80,19 +80,19 @@ void Animation::updateAnimation(int velocity, bool jumping)
 		animationTicker++;
 
 		if (facingRight)
-			texture = (*rightClips)[animationFrame];
+			texture = (*rightAnimations)[animationFrame];
 		else
-			texture = (*leftClips)[animationFrame];
+			texture = (*leftAnimations)[animationFrame];
 	}
 	else
 	{
 		if (facingRight)
 		{
-			texture = (*rightClips)[3];
+			texture = (*rightAnimations)[3];
 		}
 		else
 		{
-			texture = (*leftClips)[3];
+			texture = (*leftAnimations)[3];
 		}
 	}
 }
@@ -120,19 +120,19 @@ void Animation::updateMonsterAnimation(int velocity, bool jumping)
 		animationTicker++;
 
 		if (facingRight)
-			texture = (*rightClips)[animationFrame];
+			texture = (*rightAnimations)[animationFrame];
 		else
-			texture = (*leftClips)[animationFrame];
+			texture = (*leftAnimations)[animationFrame];
 	}
 	else
 	{
 		if (facingRight)
 		{
-			texture = (*rightClips)[3];
+			texture = (*rightAnimations)[3];
 		}
 		else
 		{
-			texture = (*leftClips)[3];
+			texture = (*leftAnimations)[3];
 		}
 	}
 }
@@ -146,8 +146,8 @@ void Animation::updateDirection(bool direction, int* velocity)
 	}
 }
 
-
 void Animation::updateMonsterDirection()
 {
 		facingRight = !facingRight;
 }
+
