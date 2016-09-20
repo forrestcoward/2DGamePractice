@@ -26,6 +26,8 @@
 // Our own includes.
 #include "Texture.h"
 #include "Creature.h"
+#include "Animation.h"
+#include "Monster.h"
 
 
 using namespace std;
@@ -131,7 +133,9 @@ int main(int argc, char **argv)
 	// Create the renderer. This will draw to the window.
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	//Initialize map terrain 
-	vector <Texture>* mapTerrain = new vector <Texture>();
+	vector <Texture*>* mapTerrain = new vector <Texture*>();
+	//Initialize map creatures
+	vector <Monster*>* mapMonsters = new vector <Monster*>();
 	// Create background texture.
 	SDL_Texture* backgroundTexture = Texture::LoadTexture("../images/backgrounds/Icy_Background.png", renderer);
 	//Load icy tiles.
@@ -140,7 +144,7 @@ int main(int argc, char **argv)
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, backgroundTexture, renderer);
+	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, backgroundTexture, renderer);
 
 	SDL_Event e;
 	bool running = true;
@@ -167,14 +171,14 @@ int main(int argc, char **argv)
 					break;
 				case SDLK_LEFT:
 					mario->velocity = -MARIO_STARTING_VELOCITY;
-					mario->updateDirection(false);
-					mario->updateAnimation();
+					mario->characterAnimation->updateDirection(false, &mario->velocity);
+					mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
 					mario->move();
 					break;
 				case SDLK_RIGHT:
 					mario->velocity = MARIO_STARTING_VELOCITY;
-					mario->updateDirection(true);
-					mario->updateAnimation();
+					mario->characterAnimation->updateDirection(true, &mario->velocity);
+					mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
 					mario->move();
 					break;
 				default:
@@ -184,10 +188,11 @@ int main(int argc, char **argv)
 			else
 			{
 				mario->velocity = 0;
-				mario->updateAnimation();
+				mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
 			}
 		}
-
+		Monster::updateAllMonsterAnimations(mapMonsters);
+		Monster::moveAllMonsters(mapMonsters);
 		Texture::moveCamera(&camera, mario);
 		mario->jumpAdjust();
 		mario->checkLand(mapTerrain);
@@ -197,11 +202,11 @@ int main(int argc, char **argv)
 		SDL_RenderClear(renderer);
 
 		//Draw all textures
-		Texture::renderAllTextures(&camera, backgroundTexture, mario, mapTerrain, renderer);
+		Texture::renderAllTextures(&camera, backgroundTexture, mario, mapTerrain, mapMonsters, renderer);
 
 		SDL_RenderPresent(renderer);
 	}
-	SDL_DestroyTexture(mario->texture);
+	SDL_DestroyTexture(mario->characterAnimation->texture);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;

@@ -4,6 +4,8 @@
 #include <fstream>
 #include "Texture.h"
 #include "Creature.h"
+#include "Animation.h"
+#include "Monster.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -84,7 +86,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture>* mapTerrain, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -97,24 +99,24 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 	{
 		if (currentCharacter == 'a')
 		{
-			Texture newTerrain;
-			newTerrain.x = currentX;
-			newTerrain.y = currentY;
-			newTerrain.h = (*clips)[0].h;
-			newTerrain.w = (*clips)[0].w;
-			newTerrain.Clip = (*clips)[0];
-			newTerrain.spriteSheet = spriteSheet;
+			Texture* newTerrain = new Texture();
+			newTerrain->x = currentX;
+			newTerrain->y = currentY;
+			newTerrain->h = (*clips)[0].h;
+			newTerrain->w = (*clips)[0].w;
+			newTerrain->Clip = (*clips)[0];
+			newTerrain->spriteSheet = spriteSheet;
 			mapTerrain->push_back(newTerrain);
 		}
 		else if (currentCharacter == 'b')
 		{
-			Texture newTerrain;
-			newTerrain.x = currentX;
-			newTerrain.y = currentY;
-			newTerrain.h = (*clips)[1].h;
-			newTerrain.w = (*clips)[1].w;
-			newTerrain.Clip = (*clips)[1];
-			newTerrain.spriteSheet = spriteSheet;
+			Texture* newTerrain = new Texture();
+			newTerrain->x = currentX;
+			newTerrain->y = currentY;
+			newTerrain->h = (*clips)[1].h;
+			newTerrain->w = (*clips)[1].w;
+			newTerrain->Clip = (*clips)[1];
+			newTerrain->spriteSheet = spriteSheet;
 			mapTerrain->push_back(newTerrain);
 		}
 		else if (currentCharacter == 'm')
@@ -123,8 +125,16 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 			mario = new Creature(marioTexture, currentX, currentY, 0, "mario", renderer);
 			mario->w = 16;
 			mario->h = 27;
-			mario->setClips(renderer);
-			mario->ability = "none";
+			mario->characterAnimation->setClips(renderer, mario->name);
+		}
+		else if (currentCharacter == 'k')
+		{
+			SDL_Texture* koopaTexture = Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer);
+			Monster* newKoopa = new Monster(koopaTexture, currentX, currentY, -2, 100, "koopa", renderer);
+			newKoopa->w = 16;
+			newKoopa->h = 27;
+			newKoopa->characterAnimation->setClips(renderer, newKoopa->name);
+			mapMonsters->push_back(newKoopa);
 		}
 		else if (currentCharacter == '#')
 		{
@@ -154,12 +164,22 @@ int Texture::getH()
 	return this->h;
 }
 
+//Renders bad guys
+void Texture::renderAllMonsters(SDL_Rect* camera, vector <Monster*>* mapMonsters, vector<Texture*>* mapTerrain, SDL_Renderer* renderer)
+{
+	for (unsigned int i = 0; i < mapMonsters->size(); i++)
+	{
+		(*mapMonsters)[i]->checkLand(mapTerrain);
+		Texture::RenderTexture(camera, (*mapMonsters)[i]->characterAnimation->texture, renderer, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y);
+	}
+}
+
 //Renders terrain
-void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture>* Terrain, SDL_Renderer *renderer)
+void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture*>* Terrain, SDL_Renderer *renderer)
 {
 	for (unsigned int i = 0; i < Terrain->size(); i++)
 	{
-		Texture::RenderTexture(camera, (*Terrain)[i].spriteSheet, renderer, (*Terrain)[i].x, (*Terrain)[i].y, &(*Terrain)[i].Clip);
+		Texture::RenderTexture(camera, (*Terrain)[i]->spriteSheet, renderer, (*Terrain)[i]->x, (*Terrain)[i]->y, &(*Terrain)[i]->Clip);
 	}
 }
 
@@ -193,10 +213,12 @@ void Texture::moveCamera(SDL_Rect* camera, Creature* mario)
 }
 
 //Render all textures
-void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture, Creature* mario, vector <Texture>* mapTerrain, SDL_Renderer* renderer)
+void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture, Creature* mario, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, SDL_Renderer* renderer)
 {
 	Texture::RenderTexture(camera, backgroundTexture, renderer, 0, 0);
 	Texture::renderAllTerrain(camera, mapTerrain, renderer);
-	Texture::RenderTexture(camera, mario->texture, renderer, mario->x, mario->y);
+	Texture::renderAllMonsters(camera, mapMonsters, mapTerrain, renderer);
+	Texture::RenderTexture(camera, mario->characterAnimation->texture, renderer, mario->x, mario->y);
 	SDL_RenderPresent(renderer);
 }
+
