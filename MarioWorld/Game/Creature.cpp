@@ -134,6 +134,10 @@ void Creature::useAbility(SDL_Renderer* renderer)
 		abilityObjects = new vector <AbilityObject*>();
 		abilityObjects->push_back(new AbilityObject(x + w, y + h/2, characterAnimation->getDirection(), ability, renderer));
 	}
+	else
+	{
+		abilityObjects->push_back(new AbilityObject(x + w, y + h / 2, characterAnimation->getDirection(), ability, renderer));
+	}
 }
 
 //Update ability animations

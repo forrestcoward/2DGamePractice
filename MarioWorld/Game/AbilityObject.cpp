@@ -11,9 +11,9 @@ AbilityObject::AbilityObject(int x, int y, bool direction, string abilityName, S
 	this->x = x;
 	this->y = y;
 	if (direction)
-		velocity = 4;
+		velocity = 8;
 	else
-		velocity = -10;
+		velocity = -8;
 	verticalVelocity = 4;
 	abilityAnimation = new AbilityAnimation(abilityName, renderer);
 }
