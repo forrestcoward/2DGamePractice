@@ -1,5 +1,11 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 #include "AbilityAnimation.h"
 #include "Texture.h"
+#include <string>
+
+using namespace std;
 
 //Default constructor
 AbilityAnimation::AbilityAnimation()
@@ -9,8 +15,10 @@ AbilityAnimation::AbilityAnimation()
 //Constructor
 AbilityAnimation::AbilityAnimation(string name, SDL_Renderer* renderer)
 {
+	animationFrameTicker = 0;
+	animationFrameTickerCap = 2;
 	texture = Texture::LoadTexture("../images/baddies/Fireball_1.png", renderer);
-	//setTextures(name, renderer);
+	setAnimations(name, renderer);
 	w = 8;
 	h = 8;
 	animationFrame = 0;
@@ -34,7 +42,7 @@ int AbilityAnimation::getW()
 }
 
 //Sets ability textures 
-void AbilityAnimation::setTextures(string abilityName, SDL_Renderer* renderer)
+void AbilityAnimation::setAnimations(string abilityName, SDL_Renderer* renderer)
 {
 	abilityTextures = new vector <SDL_Texture*>();
 	if (abilityName == "fireball")
@@ -46,7 +54,28 @@ void AbilityAnimation::setTextures(string abilityName, SDL_Renderer* renderer)
 	}
 }
 
+//Returns animation frame
 int AbilityAnimation::getAnimationFrame()
 {
 	return animationFrame;
+}
+
+//Updates current texture
+void AbilityAnimation::updateAbilityTexture()
+{
+	if (animationFrameTicker == animationFrameTickerCap)
+	{
+		animationFrame++;
+		animationFrameTicker = 0;
+	}
+
+	if (animationFrame == 4)
+	{
+		animationFrame = 0;
+		animationFrameTicker = 0;
+	}
+	else
+		animationFrameTicker++;
+
+	texture = (*abilityTextures)[animationFrame];
 }

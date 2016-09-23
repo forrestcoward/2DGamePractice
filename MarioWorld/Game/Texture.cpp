@@ -228,14 +228,11 @@ void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture
 //Render all ability objects
 void Texture::renderAllAbilityObjects(SDL_Rect* camera, vector <AbilityObject*>* abilityObjects, SDL_Renderer* renderer)
 {
-	vector <SDL_Texture*>* currentAbilityTextures;
-	
 	if (abilityObjects != NULL)
 	{
 		for (unsigned int i = 0; i < abilityObjects->size(); i++)
 		{
-			currentAbilityTextures = (*abilityObjects)[i]->abilityAnimation->abilityTextures;
-			Texture::RenderTexture(camera, (*abilityObjects)[i]->abilityAnimation->texture, renderer, (*abilityObjects)[i]->getX(), (*abilityObjects)[i]->getY());
+			Texture::RenderTexture(camera, (*abilityObjects)[i]->abilityAnimation->texture, renderer, (*abilityObjects)[i]->x, (*abilityObjects)[i]->y);
 		}
 	}
 }

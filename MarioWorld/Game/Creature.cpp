@@ -6,6 +6,7 @@
 #include "Animation.h"
 #include "Texture.h"
 #include "AbilityObject.h"
+#include "AbilityAnimation.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -28,7 +29,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 	this->y = y;
 	this->velocity = velocity;
 	this->name = name;
-	ability = "none";
+	ability = "fireball";
 	verticalVelocity = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 }
@@ -125,12 +126,41 @@ void Creature::setAbility(string ability)
 	this->ability = ability;
 }
 
+//Use ability
 void Creature::useAbility(SDL_Renderer* renderer)
 {
 	if (abilityObjects == NULL)
 	{
 		abilityObjects = new vector <AbilityObject*>();
 		abilityObjects->push_back(new AbilityObject(x + w, y + h/2, characterAnimation->getDirection(), ability, renderer));
+	}
+}
+
+//Update ability animations
+void Creature::updateAbilityAnimations()
+{
+	if (abilityObjects != NULL)
+	{
+		for (unsigned int i = 0; i < abilityObjects->size(); i++)
+		{
+			(*abilityObjects)[i]->abilityAnimation->AbilityAnimation::updateAbilityTexture();
+		}
+	}
+}
+
+//Move all ability objects
+void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain)
+{
+	if (abilityObjects != NULL)
+	{
+		for (unsigned int i = 0; i < abilityObjects->size(); i++)
+		{
+			(*abilityObjects)[i]->x += (*abilityObjects)[i]->velocity;
+			(*abilityObjects)[i]->y += (*abilityObjects)[i]->verticalVelocity;
+			(*abilityObjects)[i]->height += abs((*abilityObjects)[i]->verticalVelocity);
+			(*abilityObjects)[i]->isCollidingBelow(mapTerrain);
+			(*abilityObjects)[i]->checkHeight();
+		}
 	}
 }
 

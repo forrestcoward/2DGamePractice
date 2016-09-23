@@ -40,6 +40,8 @@ public:
 	void Creature::move();
 	void Creature::setAbility(string ability);
 	void Creature::useAbility(SDL_Renderer* renderer);
+	void Creature::updateAbilityAnimations();
+	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain);
 };
 
 #endif CREATURE

@@ -11,6 +11,7 @@ using namespace std;
 class AbilityAnimation
 {
 public:
+	int originalHeight;
 	SDL_Texture* texture;
 	AbilityAnimation();
 	AbilityAnimation(string name, SDL_Renderer* renderer);
@@ -18,9 +19,12 @@ public:
 	vector <SDL_Texture*>* abilityTextures;
 	int AbilityAnimation::getW();
 	int AbilityAnimation::getH();
-	void AbilityAnimation::setTextures(string abilityName, SDL_Renderer* renderer); 
+	void AbilityAnimation::setAnimations(string abilityName, SDL_Renderer* renderer); 
 	int AbilityAnimation::getAnimationFrame();
+	void AbilityAnimation::updateAbilityTexture();
 private:
+	int animationFrameTickerCap;
+	int animationFrameTicker;
 	int animationFrame;
 	int w;
 	int h;
