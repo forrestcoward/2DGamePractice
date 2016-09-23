@@ -181,6 +181,10 @@ int main(int argc, char **argv)
 					mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
 					mario->move();
 					break;
+				case SDLK_UP:
+					cout << mario->abilityObjects << endl;
+					mario->useAbility(renderer);
+					break;
 				default:
 					break;
 				}
@@ -197,6 +201,7 @@ int main(int argc, char **argv)
 		mario->jumpAdjust();
 		mario->checkLand(mapTerrain);
 		mario->checkBorders();
+
 
 		// Clear the screen.
 		SDL_RenderClear(renderer);

@@ -3,6 +3,7 @@
 
 class Animation;
 class Texture;
+class AbilityObject;
 
 #include <iostream>
 #include <SDL.h>
@@ -15,6 +16,7 @@ class Creature
 {
 public: 
 	Animation* characterAnimation;
+	vector <AbilityObject*>* abilityObjects;
 	string name;
 	string ability;
 	int patrolRadius;
@@ -37,7 +39,7 @@ public:
 	void Creature::checkBorders();
 	void Creature::move();
 	void Creature::setAbility(string ability);
-	void Creature::useAbility();
+	void Creature::useAbility(SDL_Renderer* renderer);
 };
 
 #endif CREATURE

@@ -11,13 +11,17 @@ using namespace std;
 class AbilityAnimation
 {
 public:
+	SDL_Texture* texture;
 	AbilityAnimation();
+	AbilityAnimation(string name, SDL_Renderer* renderer);
 	~AbilityAnimation();
 	vector <SDL_Texture*>* abilityTextures;
-	void AbilityAnimation::getW();
-	void AbilityAnimation::getH();
+	int AbilityAnimation::getW();
+	int AbilityAnimation::getH();
+	void AbilityAnimation::setTextures(string abilityName, SDL_Renderer* renderer); 
+	int AbilityAnimation::getAnimationFrame();
 private:
-	void AbilityAnimation::setTextures();
+	int animationFrame;
 	int w;
 	int h;
 };

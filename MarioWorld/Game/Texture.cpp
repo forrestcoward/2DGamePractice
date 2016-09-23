@@ -6,6 +6,8 @@
 #include "Creature.h"
 #include "Animation.h"
 #include "Monster.h"
+#include "AbilityObject.h"
+#include "AbilityAnimation.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -219,6 +221,21 @@ void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture
 	Texture::renderAllTerrain(camera, mapTerrain, renderer);
 	Texture::renderAllMonsters(camera, mapMonsters, mapTerrain, renderer);
 	Texture::RenderTexture(camera, mario->characterAnimation->texture, renderer, mario->x, mario->y);
+	Texture::renderAllAbilityObjects(camera, mario->abilityObjects, renderer);
 	SDL_RenderPresent(renderer);
 }
 
+//Render all ability objects
+void Texture::renderAllAbilityObjects(SDL_Rect* camera, vector <AbilityObject*>* abilityObjects, SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* currentAbilityTextures;
+	
+	if (abilityObjects != NULL)
+	{
+		for (unsigned int i = 0; i < abilityObjects->size(); i++)
+		{
+			currentAbilityTextures = (*abilityObjects)[i]->abilityAnimation->abilityTextures;
+			Texture::RenderTexture(camera, (*abilityObjects)[i]->abilityAnimation->texture, renderer, (*abilityObjects)[i]->getX(), (*abilityObjects)[i]->getY());
+		}
+	}
+}

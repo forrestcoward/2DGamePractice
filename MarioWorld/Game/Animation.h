@@ -19,6 +19,7 @@ public:
 	void Animation::updateDirection(bool direction, int* velocity);
 	void Animation::updateMonsterDirection();
 	void Animation::setAnimations(SDL_Renderer* renderer, string ability);
+	bool Animation::getDirection();
 private:
 	bool facingRight;
 	int animationFrame;

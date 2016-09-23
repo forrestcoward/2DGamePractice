@@ -1,11 +1,20 @@
 #include "AbilityObject.h"
+#include "Texture.h"
+#include "AbilityAnimation.h"
 
 
 //Default Constructor
-AbilityObject::AbilityObject()
+AbilityObject::AbilityObject(int x, int y, bool direction, string abilityName, SDL_Renderer* renderer)
 {
+	this->x = x;
+	this->y = y;
+	if (direction)
+		velocity = 4;
+	else
+		velocity = -4;
+	verticalVelocity = -4;
+	abilityAnimation = new AbilityAnimation(abilityName, renderer);
 }
-
 
 //Deconstructor
 AbilityObject::~AbilityObject()
@@ -13,29 +22,30 @@ AbilityObject::~AbilityObject()
 }
 
 //Return X
-void AbilityObject::getX()
+int AbilityObject::getX()
 {
-
+	return x;
 }
 
 //Return Y
-void AbilityObject::getY()
+int AbilityObject::getY()
 {
-
+	return y;
 }
 
 //Return H
-void AbilityObject::getH()
+int AbilityObject::getH()
 {
-	
+	return h;
 }
 
 //Return W
-void AbilityObject::getW()
+int AbilityObject::getW()
 {
-
+	return w;
 }
 
+//Check if object is on the ground
 bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain)
 {
 	for (unsigned int i = 0; i < Terrain->size(); i++)
@@ -48,4 +58,16 @@ bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain)
 	}
 
 	return false;
+}
+
+//Move this AbilityObject on x-axis
+void AbilityObject::moveX()
+{
+	x += velocity;
+}
+
+//Move this AbilityObject on y-axis
+void AbilityObject::moveY()
+{
+	y += verticalVelocity;
 }

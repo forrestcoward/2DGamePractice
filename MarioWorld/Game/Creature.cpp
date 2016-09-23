@@ -5,6 +5,7 @@
 #include "Creature.h"
 #include "Animation.h"
 #include "Texture.h"
+#include "AbilityObject.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -19,6 +20,7 @@ Creature::Creature()
 //Constructor for mario
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
+	abilityObjects = NULL;
 	characterAnimation = new Animation(texture, name, 4, renderer);
 	jumping = false;
 	gravity = 1;
@@ -34,6 +36,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 //Constructor for bad guys
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
+	abilityObjects = NULL;
 	characterAnimation = new Animation(texture, name, 3, renderer);
 	jumping = false;
 	gravity = 1;
@@ -42,7 +45,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolR
 	this->patrolRadius = patrolRadius;
 	distanceFromOrigin = 0;
 	this->name = name;
-	ability = "none";
+	ability = "fireball";
 	this->velocity = velocity;
 	verticalVelocity = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
@@ -122,8 +125,12 @@ void Creature::setAbility(string ability)
 	this->ability = ability;
 }
 
-void Creature::useAbility()
+void Creature::useAbility(SDL_Renderer* renderer)
 {
-	//Instantiate new abilityObject
+	if (abilityObjects == NULL)
+	{
+		abilityObjects = new vector <AbilityObject*>();
+		abilityObjects->push_back(new AbilityObject(x + w, y + h/2, characterAnimation->getDirection(), ability, renderer));
+	}
 }
 

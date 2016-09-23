@@ -151,3 +151,8 @@ void Animation::updateMonsterDirection()
 		facingRight = !facingRight;
 }
 
+bool Animation::getDirection()
+{
+	return facingRight;
+}
+
