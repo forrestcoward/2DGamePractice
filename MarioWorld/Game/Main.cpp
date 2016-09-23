@@ -182,7 +182,8 @@ int main(int argc, char **argv)
 					mario->move();
 					break;
 				case SDLK_UP:
-					mario->useAbility(renderer);
+					if(!mario->jumping)
+						mario->useAbility(renderer);
 					break;
 				default:
 					break;
