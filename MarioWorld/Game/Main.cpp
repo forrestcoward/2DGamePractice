@@ -151,14 +151,15 @@ int main(int argc, char **argv)
 
 	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
+	SDL_PumpEvents();
 	while (running)
 	{
-		if (SDL_PollEvent(&e))
+		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
 			{
 				running = false;
-			}  
+			}
 
 			// If a key was pressed.
 			if (e.type == SDL_KEYDOWN)
@@ -168,21 +169,10 @@ int main(int argc, char **argv)
 				{
 				case SDLK_SPACE:
 					mario->jump(mapTerrain);
-					break;
-				case SDLK_LEFT:
-					mario->velocity = -MARIO_STARTING_VELOCITY;
-					mario->characterAnimation->updateDirection(false, &mario->velocity);
-					mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
-					mario->move();
-					break;
-				case SDLK_RIGHT:
-					mario->velocity = MARIO_STARTING_VELOCITY;
-					mario->characterAnimation->updateDirection(true, &mario->velocity);
-					mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
-					mario->move();
+					cout << "Jump" << endl;
 					break;
 				case SDLK_UP:
-					if(!mario->jumping)
+					if (!mario->jumping)
 						mario->useAbility(renderer);
 					break;
 				default:
@@ -194,6 +184,25 @@ int main(int argc, char **argv)
 				mario->velocity = 0;
 				mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
 			}
+		}
+
+		// Must call this after processing all events.
+		const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+		if (keystate[SDL_SCANCODE_RIGHT])
+		{
+			mario->velocity = MARIO_STARTING_VELOCITY;
+			mario->characterAnimation->updateDirection(true, &mario->velocity);
+			mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
+			mario->move();
+		}
+
+		if (keystate[SDL_SCANCODE_LEFT])
+		{
+			mario->velocity = -MARIO_STARTING_VELOCITY;
+			mario->characterAnimation->updateDirection(false, &mario->velocity);
+			mario->characterAnimation->updateAnimation(mario->velocity, mario->jumping);
+			mario->move();
 		}
 		
 		Monster::updateAllMonsterAnimations(mapMonsters);
