@@ -32,7 +32,6 @@ Monster::Monster(SDL_Texture* texture, int x, int y, int velocity, int patrolRad
 Monster::~Monster()
 {
 	characterAnimation->~Animation();
-	//delete characterAnimation;
 }
 
 //Update monster animations
@@ -49,20 +48,18 @@ void Monster::moveAllMonsters(vector <Monster*>* mapMonsters)
 {
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
-		for (unsigned int i = 0; i < mapMonsters->size(); i++)
+
+		if ((abs((*mapMonsters)[i]->distanceFromOrigin) > (*mapMonsters)[i]->patrolRadius))//Turn around
 		{
-			if ((abs((*mapMonsters)[i]->distanceFromOrigin) > (*mapMonsters)[i]->patrolRadius))//Turn around
-			{
-				(*mapMonsters)[i]->velocity = -(*mapMonsters)[i]->velocity;
-				(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
-				(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
-				(*mapMonsters)[i]->characterAnimation->updateMonsterDirection();
-			}
-			else//Keep walking
-			{
-				(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
-				(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
-			}
+			(*mapMonsters)[i]->velocity = -(*mapMonsters)[i]->velocity;
+			(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
+			(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
+			(*mapMonsters)[i]->characterAnimation->updateMonsterDirection();
+		}
+		else//Keep walking
+		{
+			(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
+			(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
 		}
 	}
 }

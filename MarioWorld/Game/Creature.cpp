@@ -188,7 +188,7 @@ void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 {
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
-		if ((y + h >= (*mapMonsters)[i]->y) && (((x + w <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x + w) >= ((*mapMonsters)[i]->x) || (x <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x >= ((*mapMonsters)[i]->x)))
+		if (((y + h >= (*mapMonsters)[i]->y) && (((x + w <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x + w) >= ((*mapMonsters)[i]->x) || (x <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x >= ((*mapMonsters)[i]->x))) && verticalVelocity > 0)
 		{
 			(*mapMonsters)[i]->~Monster();
 			mapMonsters->erase(mapMonsters->begin() + i);
@@ -196,7 +196,7 @@ void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 	}
 }
 
-//Kill onject
+//Kill this
 void Creature::die()
 {
 	Creature::~Creature();
