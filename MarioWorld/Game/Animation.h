@@ -13,6 +13,7 @@ class Animation
 public:
 	Animation();
 	Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Renderer* renderer);
+	~Animation();
 	SDL_Texture* texture;
 	void Animation::updateAnimation(int velocity, bool jumping);
 	void Animation::updateMonsterAnimation(int velocity, bool jumping);

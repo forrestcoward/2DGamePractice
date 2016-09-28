@@ -53,6 +53,20 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolR
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 }
 
+//Deconstructor
+Creature::~Creature()
+{
+	characterAnimation->~Animation();
+	delete characterAnimation;
+
+	if (abilityObject != NULL)
+	{
+		abilityObject->~AbilityObject();
+		delete abilityObject;
+		abilityObject = NULL;
+	}
+}
+
 //Checks if this creature is on the ground
 bool Creature::isCollidingBelow(vector <Texture*>* Terrain)
 {
@@ -170,15 +184,20 @@ void Creature::checkDistance()
 }
 
 //Check if falling on monster
-bool Creature::isStompingMonster(vector <Monster*>* mapMonsters)
+void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 {
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
 		if ((y + h >= (*mapMonsters)[i]->y) && (((x + w <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x + w) >= ((*mapMonsters)[i]->x) || (x <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x >= ((*mapMonsters)[i]->x)))
 		{
-			return true;
+			(*mapMonsters)[i]->~Monster();
+			(*mapMonsters).erase((*mapMonsters).begin() + i);
 		}
 	}
+}
 
-	return false;
+//Kill onject
+void Creature::die()
+{
+	Creature::~Creature();
 }

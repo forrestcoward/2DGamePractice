@@ -7,10 +7,29 @@ Animation::Animation()
 {
 }
 
+//Deconstructor
+Animation::~Animation()
+{
+	for (unsigned int i = 0; i < rightAnimations->size(); i++)
+	{
+		SDL_DestroyTexture((*rightAnimations)[i]);
+	}
+	rightAnimations->clear();
+	
+	for (unsigned int i = 0; i < leftAnimations->size(); i++)
+	{
+		SDL_DestroyTexture((*leftAnimations)[i]);
+	}
+	leftAnimations->clear();
+
+	SDL_DestroyTexture(texture);
+}
+
 //Constructor
 Animation::Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Renderer* renderer)
 {
 	Animation::setAnimations(renderer, name);
+	abilityAnimations = NULL;
 	this->texture = texture;
 	animationFrame = 0;
 	animationTicker = 0; 

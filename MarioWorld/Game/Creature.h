@@ -32,6 +32,7 @@ public:
 	Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer);
 	Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer);
 	Creature();
+	~Creature();
 	void Creature::checkDistance();
 	bool Creature::isCollidingBelow(vector <Texture*>* Terrain);
 	void Creature::jump(vector <Texture*>* Terrain);
@@ -43,8 +44,8 @@ public:
 	void Creature::useAbility(SDL_Renderer* renderer);
 	void Creature::updateAbilityAnimations();
 	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain);
-	//void Creature::checkMonsterStomp(vector <Monster*>* mapMonsters);
-	bool Creature::isStompingMonster(vector <Monster*>* mapMonsters);
+	void Creature::checkStompingMonster(vector <Monster*>* mapMonsters);
+	void Creature::die();
 };
 
 #endif CREATURE

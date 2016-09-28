@@ -24,7 +24,6 @@ AbilityObject::AbilityObject(int x, int y, bool direction, string abilityName, S
 AbilityObject::~AbilityObject()
 {
 	abilityAnimation->~AbilityAnimation();
-	//delete abilityAnimation;
 }
 
 //Check if object is on the ground

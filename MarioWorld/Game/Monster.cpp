@@ -31,6 +31,8 @@ Monster::Monster(SDL_Texture* texture, int x, int y, int velocity, int patrolRad
 //Deconstructor
 Monster::~Monster()
 {
+	characterAnimation->~Animation();
+	//delete characterAnimation;
 }
 
 //Update monster animations

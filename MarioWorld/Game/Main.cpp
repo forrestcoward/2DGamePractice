@@ -213,10 +213,7 @@ int main(int argc, char **argv)
 		mario->checkBorders();
 		mario->updateAbilityAnimations();
 		mario->moveAbilityObjects(mapTerrain);
-		if (mario->isStompingMonster(mapMonsters))
-		{
-			cout << "kill monster!" << endl;
-		}
+		mario->checkStompingMonster(mapMonsters);
 
 		// Clear the screen.
 		SDL_RenderClear(renderer);
