@@ -10,6 +10,12 @@ using namespace std;
 //Default constructor
 AbilityAnimation::AbilityAnimation()
 {
+	for (unsigned int i = 0; i < abilityTextures->size(); i++)
+	{
+		SDL_DestroyTexture((*abilityTextures)[i]);
+	}
+	abilityTextures->clear();
+	SDL_DestroyTexture(texture);
 }
 
 //Constructor

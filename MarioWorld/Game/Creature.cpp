@@ -21,7 +21,7 @@ Creature::Creature()
 //Constructor for mario
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
-	abilityObjects = NULL;
+	abilityObject = NULL;
 	characterAnimation = new Animation(texture, name, 4, renderer);
 	jumping = false;
 	gravity = 1;
@@ -37,7 +37,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 //Constructor for bad guys
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
-	abilityObjects = NULL;
+	abilityObject = NULL;
 	characterAnimation = new Animation(texture, name, 3, renderer);
 	jumping = false;
 	gravity = 1;
@@ -129,42 +129,41 @@ void Creature::setAbility(string ability)
 //Use ability
 void Creature::useAbility(SDL_Renderer* renderer)
 {
-	if (abilityObjects == NULL)
-	{
-		abilityObjects = new vector <AbilityObject*>();
-		abilityObjects->push_back(new AbilityObject(x + w, y + h/2, characterAnimation->getDirection(), ability, renderer));
-	}
-	else
-	{
-		abilityObjects->push_back(new AbilityObject(x + w, y + h / 2, characterAnimation->getDirection(), ability, renderer));
-	}
+	if (abilityObject == NULL)
+		abilityObject = new AbilityObject(x + w, y + h / 2, characterAnimation->getDirection(), ability, renderer);
 }
 
 //Update ability animations
 void Creature::updateAbilityAnimations()
 {
-	if (abilityObjects != NULL)
+	if (abilityObject != NULL)
 	{
-		for (unsigned int i = 0; i < abilityObjects->size(); i++)
-		{
-			(*abilityObjects)[i]->abilityAnimation->AbilityAnimation::updateAbilityTexture();
-		}
+			abilityObject->abilityAnimation->AbilityAnimation::updateAbilityTexture();
 	}
 }
 
 //Move all ability objects
 void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain)
 {
-	if (abilityObjects != NULL)
+	if (abilityObject != NULL)
 	{
-		for (unsigned int i = 0; i < abilityObjects->size(); i++)
-		{
-			(*abilityObjects)[i]->x += (*abilityObjects)[i]->velocity;
-			(*abilityObjects)[i]->y += (*abilityObjects)[i]->verticalVelocity;
-			(*abilityObjects)[i]->height += abs((*abilityObjects)[i]->verticalVelocity);
-			(*abilityObjects)[i]->isCollidingBelow(mapTerrain);
-			(*abilityObjects)[i]->checkHeight();
-		}
+		abilityObject->moveX();
+		abilityObject->moveY();
+		abilityObject->height += abs(abilityObject->verticalVelocity);
+		abilityObject->isCollidingBelow(mapTerrain);
+		abilityObject->checkHeight();
+		checkDistance();
 	}
 }
 
+//Check fireball distance traveled
+void Creature::checkDistance()
+{
+	if (abilityObject->getDistanceTraveled() > abilityObject->getMaxDistance())
+	{
+		//start deleting the fireball
+		abilityObject->~AbilityObject();
+		delete abilityObject;
+		abilityObject = NULL;
+	}
+}

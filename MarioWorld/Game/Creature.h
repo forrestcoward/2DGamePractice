@@ -16,7 +16,7 @@ class Creature
 {
 public: 
 	Animation* characterAnimation;
-	vector <AbilityObject*>* abilityObjects;
+	AbilityObject* abilityObject;
 	string name;
 	string ability;
 	int patrolRadius;
@@ -32,6 +32,7 @@ public:
 	Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer);
 	Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer);
 	Creature();
+	void Creature::checkDistance();
 	bool Creature::isCollidingBelow(vector <Texture*>* Terrain);
 	void Creature::jump(vector <Texture*>* Terrain);
 	void Creature::jumpAdjust();

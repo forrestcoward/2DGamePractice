@@ -6,12 +6,14 @@
 //Default Constructor
 AbilityObject::AbilityObject(int x, int y, bool direction, string abilityName, SDL_Renderer* renderer)
 {
+	maxDistance = 122;
+	distanceTraveled = 0;
 	maxHeight = 32;
 	height = 0;
 	this->x = x;
 	this->y = y;
 	if (direction)
-		velocity = 8;
+		velocity = 4;
 	else
 		velocity = -8;
 	verticalVelocity = 4;
@@ -21,6 +23,8 @@ AbilityObject::AbilityObject(int x, int y, bool direction, string abilityName, S
 //Deconstructor
 AbilityObject::~AbilityObject()
 {
+	abilityAnimation->~AbilityAnimation();
+	//delete abilityAnimation;
 }
 
 //Check if object is on the ground
@@ -54,6 +58,7 @@ void AbilityObject::checkHeight()
 void AbilityObject::moveX()
 {
 	x += velocity;
+	distanceTraveled += abs(velocity);
 }
 
 //Move this AbilityObject on y-axis
@@ -62,3 +67,14 @@ void AbilityObject::moveY()
 	y += verticalVelocity;
 }
 
+//Return distance traveled
+int AbilityObject::getDistanceTraveled()
+{
+	return distanceTraveled;
+}
+
+//Return max distance
+int AbilityObject::getMaxDistance()
+{
+	return maxDistance;
+}

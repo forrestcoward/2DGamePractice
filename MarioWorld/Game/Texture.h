@@ -29,7 +29,7 @@ private:
 	static void Texture::RenderTexture(SDL_Rect* camera, SDL_Texture *texture, SDL_Renderer *renderer, SDL_Rect dst, SDL_Rect *clip = nullptr);
 	static void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture*>* Terrain, SDL_Renderer *renderer);
 	static void Texture::renderAllMonsters(SDL_Rect* camera, vector <Monster*>* mapCreatures, vector <Texture*>* mapTerrain, SDL_Renderer* renderer);
-	static void Texture::renderAllAbilityObjects(SDL_Rect* camera, vector <AbilityObject*>* abilityObjects, SDL_Renderer* renderer);
+	static void Texture::renderAllAbilityObjects(SDL_Rect* camera, AbilityObject* abilityObject, SDL_Renderer* renderer);
 	double x;
 	double y;
 	int w;
