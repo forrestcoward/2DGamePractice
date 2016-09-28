@@ -191,7 +191,7 @@ void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 		if ((y + h >= (*mapMonsters)[i]->y) && (((x + w <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x + w) >= ((*mapMonsters)[i]->x) || (x <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x >= ((*mapMonsters)[i]->x)))
 		{
 			(*mapMonsters)[i]->~Monster();
-			(*mapMonsters).erase((*mapMonsters).begin() + i);
+			mapMonsters->erase(mapMonsters->begin() + i);
 		}
 	}
 }
