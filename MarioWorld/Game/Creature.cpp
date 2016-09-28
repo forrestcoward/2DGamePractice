@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <vector>
 #include "Creature.h"
+#include "Monster.h"
 #include "Animation.h"
 #include "Texture.h"
 #include "AbilityObject.h"
@@ -90,9 +91,9 @@ void Creature::jumpAdjust()
 }
 
 //Check if mario is jumping
-void Creature::checkLand(vector <Texture*>* Terrain) 
+void Creature::checkLand(vector <Texture*>* mapTerrain) 
 {
-	if (Creature::isCollidingBelow(Terrain) && jumping)
+	if (isCollidingBelow(mapTerrain) && jumping)
 	{
 		jumping = false;
 		verticalVelocity = 0;
@@ -166,4 +167,18 @@ void Creature::checkDistance()
 		delete abilityObject;
 		abilityObject = NULL;
 	}
+}
+
+//Check if falling on monster
+bool Creature::isStompingMonster(vector <Monster*>* mapMonsters)
+{
+	for (unsigned int i = 0; i < mapMonsters->size(); i++)
+	{
+		if ((y + h >= (*mapMonsters)[i]->y) && (((x + w <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x + w) >= ((*mapMonsters)[i]->x) || (x <= (*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (x >= ((*mapMonsters)[i]->x)))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

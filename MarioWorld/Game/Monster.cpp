@@ -64,3 +64,4 @@ void Monster::moveAllMonsters(vector <Monster*>* mapMonsters)
 		}
 	}
 }
+

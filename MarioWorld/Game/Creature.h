@@ -11,7 +11,7 @@ class AbilityObject;
 #include <vector>
 
 using namespace std;
-
+class Monster;
 class Creature
 {
 public: 
@@ -36,13 +36,15 @@ public:
 	bool Creature::isCollidingBelow(vector <Texture*>* Terrain);
 	void Creature::jump(vector <Texture*>* Terrain);
 	void Creature::jumpAdjust();
-	void Creature::checkLand(vector <Texture*>* Terrain);
+	void Creature::checkLand(vector <Texture*>* mapTerrain);
 	void Creature::checkBorders();
 	void Creature::move();
 	void Creature::setAbility(string ability);
 	void Creature::useAbility(SDL_Renderer* renderer);
 	void Creature::updateAbilityAnimations();
 	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain);
+	//void Creature::checkMonsterStomp(vector <Monster*>* mapMonsters);
+	bool Creature::isStompingMonster(vector <Monster*>* mapMonsters);
 };
 
 #endif CREATURE
