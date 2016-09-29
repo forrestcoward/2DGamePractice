@@ -9,6 +9,7 @@ class AbilityObject;
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
+#include <SDL_mixer.h>
 
 using namespace std;
 class Monster;
@@ -46,6 +47,15 @@ public:
 	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain);
 	void Creature::checkStompingMonster(vector <Monster*>* mapMonsters);
 	void Creature::die();
+	void Creature::stompJump();
+private:
+	void Creature::setSounds(string name);
+	void Creature::playRunSound();
+	void Creature::playJumpSound();
+	vector <Mix_Chunk*>* soundEffects;
+	void Creature::playFireballSound();
+	void Creature::playStompSound();
+	int runSoundTicker;
 };
 
 #endif CREATURE

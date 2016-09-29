@@ -169,7 +169,6 @@ int main(int argc, char **argv)
 				{
 				case SDLK_SPACE:
 					mario->jump(mapTerrain);
-					cout << "Jump" << endl;
 					break;
 				case SDLK_UP:
 					if (!mario->jumping)

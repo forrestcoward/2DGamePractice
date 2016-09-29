@@ -22,6 +22,9 @@ Creature::Creature()
 //Constructor for mario
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
+	runSoundTicker = 6;
+	soundEffects = new vector <Mix_Chunk*>();
+	setSounds(name);
 	abilityObject = NULL;
 	characterAnimation = new Animation(texture, name, 4, renderer);
 	jumping = false;
@@ -38,6 +41,8 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 //Constructor for bad guys
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
+	runSoundTicker = 0;
+	soundEffects = NULL;
 	abilityObject = NULL;
 	characterAnimation = new Animation(texture, name, 3, renderer);
 	jumping = false;
@@ -87,8 +92,9 @@ void Creature::jump(vector <Texture*>* Terrain)
 {
 	if (Creature::isCollidingBelow(Terrain) && !jumping)
 	{
+		playJumpSound();
 		jumping = true;
-		verticalVelocity = -12;
+		verticalVelocity = -9;
 		characterAnimation->updateAnimation(velocity, jumping);
 	}
 	//else do nothing
@@ -133,6 +139,13 @@ void Creature::checkBorders()
 void Creature::move()
 {
 		x += velocity;
+		if (!jumping && runSoundTicker >= 6)
+		{
+			playRunSound();
+			runSoundTicker = 0;
+		}
+		else
+			runSoundTicker++;
 }
 
 //Set ability
@@ -145,7 +158,10 @@ void Creature::setAbility(string ability)
 void Creature::useAbility(SDL_Renderer* renderer)
 {
 	if (abilityObject == NULL)
+	{
 		abilityObject = new AbilityObject(x + w, y + h / 2, characterAnimation->getDirection(), ability, renderer);
+		playFireballSound();
+	}
 }
 
 //Update ability animations
@@ -192,6 +208,8 @@ void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 		{
 			(*mapMonsters)[i]->~Monster();
 			mapMonsters->erase(mapMonsters->begin() + i);
+			stompJump();
+			playStompSound();
 		}
 	}
 }
@@ -200,4 +218,49 @@ void Creature::checkStompingMonster(vector <Monster*>* mapMonsters)
 void Creature::die()
 {
 	Creature::~Creature();
+}
+
+//Jump after stomp 
+void Creature::stompJump()
+{
+	verticalVelocity = -6;
+}
+
+//Set sound effects
+void Creature::setSounds(string name)
+{
+	if (name == "mario")
+	{
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/run.wav"));
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/jump.wav")); 
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/land.wav"));
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/stomp.wav"));
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/kick.wav"));
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/mario_throw.wav"));
+		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/fireball.wav"));
+	}
+}
+
+//Play jump sound
+void Creature::playJumpSound()
+{
+	Mix_PlayChannel(-1, (*soundEffects)[1], 0);
+}
+
+//Play run sound
+void Creature::playRunSound()
+{
+	Mix_PlayChannel(-1, (*soundEffects)[0], 0);
+}
+
+//Play Fireball sound
+void Creature::playFireballSound()
+{
+	Mix_PlayChannel(-1, (*soundEffects)[6], 0);
+}
+
+//Play stomp sound
+void Creature::playStompSound()
+{
+	Mix_PlayChannel(-1, (*soundEffects)[3], 0);
 }
