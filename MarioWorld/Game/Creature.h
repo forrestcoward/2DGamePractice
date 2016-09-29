@@ -4,6 +4,7 @@
 class Animation;
 class Texture;
 class AbilityObject;
+class SoundEffectsObject;
 
 #include <iostream>
 #include <SDL.h>
@@ -16,6 +17,7 @@ class Monster;
 class Creature
 {
 public: 
+	SoundEffectsObject* creatureSounds;
 	Animation* characterAnimation;
 	AbilityObject* abilityObject;
 	string name;
@@ -48,14 +50,6 @@ public:
 	void Creature::checkStompingMonster(vector <Monster*>* mapMonsters);
 	void Creature::die();
 	void Creature::stompJump();
-private:
-	void Creature::setSounds(string name);
-	void Creature::playRunSound();
-	void Creature::playJumpSound();
-	vector <Mix_Chunk*>* soundEffects;
-	void Creature::playFireballSound();
-	void Creature::playStompSound();
-	int runSoundTicker;
 };
 
 #endif CREATURE

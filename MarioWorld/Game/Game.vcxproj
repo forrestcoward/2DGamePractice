@@ -80,7 +80,9 @@
     <ClInclude Include="AbilityAnimation.h" />
     <ClInclude Include="AbilityObject.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="ItemObject.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="SoundEffectsObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Game\Creature.cpp" />
@@ -89,7 +91,9 @@
     <ClCompile Include="AbilityAnimation.cpp" />
     <ClCompile Include="AbilityObject.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ItemObject.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="SoundEffectsObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
