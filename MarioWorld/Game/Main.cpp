@@ -210,6 +210,7 @@ int main(int argc, char **argv)
 		Monster::updateAllMonsterAnimations(mapMonsters);
 		Monster::moveAllMonsters(mapMonsters);
 		Texture::moveCamera(&camera, mario);
+		ItemObject::updateItemObjectAnimations(mapItems);
 		mario->jumpAdjust();
 		mario->checkLand(mapTerrain);
 		mario->checkBorders();

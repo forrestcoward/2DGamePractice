@@ -2,7 +2,7 @@
 #include "ItemSoundEffects.h"
 #include "ItemAnimation.h"
 
-
+//Constructor
 ItemObject::ItemObject(SDL_Texture* texture, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
 {
 	this->x = x;
@@ -36,7 +36,7 @@ void ItemObject::collectItem()
 
 }
 
-
+//Checks if it is on terrain
 void ItemObject::isCollidingBelow(vector <Texture*>* Terrain)
 {
 	for (unsigned int i = 0; i < Terrain->size(); i++)
@@ -45,6 +45,15 @@ void ItemObject::isCollidingBelow(vector <Texture*>* Terrain)
 		{
 			y = (*Terrain)[i]->getY() - itemAnimation->h;
 		}
+	}
+}
+
+//Update all item 
+void ItemObject::updateItemObjectAnimations(vector <ItemObject*>* mapItems)
+{
+	for (unsigned int i = 0; i < mapItems->size(); i++)
+	{
+		(*mapItems)[i]->itemAnimation->updateAnimation();
 	}
 }
 

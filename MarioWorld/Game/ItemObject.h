@@ -26,6 +26,7 @@ public:
 	string name;
 	void ItemObject::collectItem();
 	void ItemObject::isCollidingBelow(vector <Texture*>* Terrain);
+	static void ItemObject::updateItemObjectAnimations(vector <ItemObject*>* mapItems);
 private:
 	int x;
 	int y;

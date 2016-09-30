@@ -25,7 +25,18 @@ ItemAnimation::~ItemAnimation()
 //Update item animation
 void ItemAnimation::updateAnimation()
 {
+	if (animationFrameTicker == animationFrameTickerCap)
+	{
+		animationFrameTicker = 0;
+		animationFrame++;
+	}
+	else
+		animationFrameTicker++;
 
+	if (animationFrame > 7)
+		animationFrame = 0;
+
+	currentTexture = (*itemAnimations)[animationFrame];
 }
 
 //Set item animations
