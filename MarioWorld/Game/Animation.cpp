@@ -175,3 +175,8 @@ bool Animation::getDirection()
 	return facingRight;
 }
 
+void Animation::updateItemAnimation() 
+{
+
+}
+

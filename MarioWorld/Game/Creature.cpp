@@ -8,7 +8,7 @@
 #include "Texture.h"
 #include "AbilityObject.h"
 #include "AbilityAnimation.h"
-#include "SoundEffectsObject.h"
+#include "CreatureSoundEffects.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -23,7 +23,7 @@ Creature::Creature()
 //Constructor for mario
 Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
-	creatureSounds = new SoundEffectsObject(name);
+	creatureSounds = new CreatureSoundEffects(name);
 	creatureSounds->runSoundTicker = 4;
 	abilityObject = NULL;
 	characterAnimation = new Animation(texture, name, 4, renderer);

@@ -4,7 +4,8 @@
 class Animation;
 class Texture;
 class AbilityObject;
-class SoundEffectsObject;
+class SoundEffects;
+class CreatureSoundEffects;
 
 #include <iostream>
 #include <SDL.h>
@@ -14,10 +15,11 @@ class SoundEffectsObject;
 
 using namespace std;
 class Monster;
+
 class Creature
 {
 public: 
-	SoundEffectsObject* creatureSounds;
+	CreatureSoundEffects* creatureSounds;
 	Animation* characterAnimation;
 	AbilityObject* abilityObject;
 	string name;

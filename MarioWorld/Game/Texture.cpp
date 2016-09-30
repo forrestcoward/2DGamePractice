@@ -8,6 +8,8 @@
 #include "Monster.h"
 #include "AbilityObject.h"
 #include "AbilityAnimation.h"
+#include "ItemObject.h"
+#include "ItemAnimation.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -88,7 +90,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -138,6 +140,15 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 			newKoopa->characterAnimation->setAnimations(renderer, newKoopa->name);
 			mapMonsters->push_back(newKoopa);
 		}
+		else if (currentCharacter == 'c')
+		{
+			SDL_Texture* coinTexture = Texture::LoadTexture("../images/items/Coin_5.png", renderer);
+			ItemObject* newCoin = new ItemObject(coinTexture, currentX, currentY, "coin", 2, renderer);
+			newCoin->itemAnimation->h = 16;
+			newCoin->itemAnimation->w = 16;
+			newCoin->isCollidingBelow(mapTerrain);
+			mapItems->push_back(newCoin);
+		}
 		else if (currentCharacter == '#')
 		{
 			currentX += 48;
@@ -146,9 +157,7 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 		else if(currentCharacter == '0')
 		{
 			currentY += 32;
-		}
-			
-			
+		}		
 	}
 
 	return mario;
@@ -215,13 +224,14 @@ void Texture::moveCamera(SDL_Rect* camera, Creature* mario)
 }
 
 //Render all textures
-void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture, Creature* mario, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, SDL_Renderer* renderer)
+void Texture::renderAllTextures(SDL_Rect* camera, SDL_Texture* backgroundTexture, Creature* mario, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Renderer* renderer)
 {
 	Texture::RenderTexture(camera, backgroundTexture, renderer, 0, 0);
 	Texture::renderAllTerrain(camera, mapTerrain, renderer);
 	Texture::renderAllMonsters(camera, mapMonsters, mapTerrain, renderer);
 	Texture::RenderTexture(camera, mario->characterAnimation->texture, renderer, mario->x, mario->y);
 	Texture::renderAllAbilityObjects(camera, mario->abilityObject, renderer);
+	Texture::renderAllItemObjects(camera, mapItems, renderer);
 	SDL_RenderPresent(renderer);
 }
 
@@ -231,5 +241,14 @@ void Texture::renderAllAbilityObjects(SDL_Rect* camera, AbilityObject* abilityOb
 	if (abilityObject != NULL)
 	{
 		Texture::RenderTexture(camera, abilityObject->abilityAnimation->texture, renderer, abilityObject->x, abilityObject->y);
+	}
+}
+
+//Render all map items
+void Texture::renderAllItemObjects(SDL_Rect* camera, vector <ItemObject*>* mapItems, SDL_Renderer* renderer)
+{
+	for (unsigned int i = 0; i < mapItems->size(); i++)
+	{
+		Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->currentTexture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
 	}
 }

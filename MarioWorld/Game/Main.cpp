@@ -28,6 +28,7 @@
 #include "Creature.h"
 #include "Animation.h"
 #include "Monster.h"
+#include "ItemObject.h"
 
 
 using namespace std;
@@ -132,6 +133,8 @@ int main(int argc, char **argv)
 	SDL_Window* window = SDL_CreateWindow(SCREEN_TITLE, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	// Create the renderer. This will draw to the window.
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//Initialize map items
+	vector <ItemObject*>* mapItems = new vector <ItemObject*>();
 	//Initialize map terrain 
 	vector <Texture*>* mapTerrain = new vector <Texture*>();
 	//Initialize map creatures
@@ -144,7 +147,7 @@ int main(int argc, char **argv)
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, backgroundTexture, renderer);
+	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
 
 	SDL_Event e;
 	bool running = true;
@@ -218,7 +221,7 @@ int main(int argc, char **argv)
 		SDL_RenderClear(renderer);
 
 		//Draw all textures
-		Texture::renderAllTextures(&camera, backgroundTexture, mario, mapTerrain, mapMonsters, renderer);
+		Texture::renderAllTextures(&camera, backgroundTexture, mario, mapTerrain, mapMonsters, mapItems, renderer);
 
 		SDL_RenderPresent(renderer);
 	}
