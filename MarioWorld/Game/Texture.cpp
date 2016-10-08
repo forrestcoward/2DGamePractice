@@ -181,16 +181,18 @@ void Texture::renderAllMonsters(SDL_Rect* camera, vector <Monster*>* mapMonsters
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
 		(*mapMonsters)[i]->checkLand(mapTerrain);
-		Texture::RenderTexture(camera, (*mapMonsters)[i]->characterAnimation->texture, renderer, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y);
+		if((*mapMonsters)[i]->x > camera->x - 50 && (*mapMonsters)[i]->x < camera->x + SCREEN_WIDTH + 50)
+			Texture::RenderTexture(camera, (*mapMonsters)[i]->characterAnimation->texture, renderer, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y);
 	}
 }
 
 //Renders terrain
-void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture*>* Terrain, SDL_Renderer *renderer)
+void Texture::renderAllTerrain(SDL_Rect* camera, vector <Texture*>* terrain, SDL_Renderer *renderer)
 {
-	for (unsigned int i = 0; i < Terrain->size(); i++)
+	for (unsigned int i = 0; i < terrain->size(); i++)
 	{
-		Texture::RenderTexture(camera, (*Terrain)[i]->spriteSheet, renderer, (*Terrain)[i]->x, (*Terrain)[i]->y, &(*Terrain)[i]->Clip);
+		if((*terrain)[i]->x > camera->x  -50 && (*terrain)[i]->x < camera->x + SCREEN_WIDTH +50)
+			Texture::RenderTexture(camera, (*terrain)[i]->spriteSheet, renderer, (*terrain)[i]->x, (*terrain)[i]->y, &(*terrain)[i]->Clip);
 	}
 }
 
@@ -249,6 +251,7 @@ void Texture::renderAllItemObjects(SDL_Rect* camera, vector <ItemObject*>* mapIt
 {
 	for (unsigned int i = 0; i < mapItems->size(); i++)
 	{
-		Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->currentTexture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
+		if((*mapItems)[i]->getX() > camera->x + 50 && (*mapItems)[i]->getX() < camera->x + SCREEN_WIDTH +50)
+			Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->currentTexture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
 	}
 }
