@@ -14,16 +14,20 @@ public:
 	int w;
 	int h;
 	Animation();
-	Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Renderer* renderer);
+	Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int tickerCap, SDL_Renderer* renderer, bool isMario);
 	~Animation();
 	SDL_Texture* texture;
 	void Animation::updateAnimation(int velocity, bool jumping);
 	void Animation::updateMonsterAnimation(int velocity, bool jumping);
 	void Animation::updateItemAnimation();
+	void Animation::updateAbilityAnimation();
 	void Animation::updateDirection(bool direction, int* velocity);
 	void Animation::updateMonsterDirection();
-	void Animation::setAnimations(SDL_Renderer* renderer, string ability);
 	bool Animation::getDirection();
+	static vector <SDL_Texture*>* Animation::loadRightMarioTextures(SDL_Renderer* renderer);
+	static vector <SDL_Texture*>* Animation::loadLeftMarioTextures(SDL_Renderer* renderer);
+	static vector <SDL_Texture*>* Animation::loadRightKoopaTextures(SDL_Renderer* renderer);
+	static vector <SDL_Texture*>* Animation::loadLeftKoopaTextures(SDL_Renderer* renderer);
 private:
 	bool facingRight;
 	int animationFrame;

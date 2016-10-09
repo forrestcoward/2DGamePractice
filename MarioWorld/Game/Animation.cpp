@@ -10,65 +10,24 @@ Animation::Animation()
 //Deconstructor
 Animation::~Animation()
 {
-	for (unsigned int i = 0; i < rightAnimations->size(); i++)
-	{
-		SDL_DestroyTexture((*rightAnimations)[i]);
-	}
-	rightAnimations->clear();
-	
-	for (unsigned int i = 0; i < leftAnimations->size(); i++)
-	{
-		SDL_DestroyTexture((*leftAnimations)[i]);
-	}
-	leftAnimations->clear();
-
-	SDL_DestroyTexture(texture);
+	rightAnimations = NULL;
+	leftAnimations = NULL;
 }
 
 //Constructor
-Animation::Animation(SDL_Texture* texture, string name, int tickerCap, SDL_Renderer* renderer)
+Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int tickerCap, SDL_Renderer* renderer, bool isMario)
 {
-	Animation::setAnimations(renderer, name);
+	this->rightAnimations = rightAnimations;
+	this->leftAnimations = leftAnimations;
 	abilityAnimations = NULL;
 	this->texture = texture;
 	animationFrame = 0;
 	animationTicker = 0; 
 	animationTickerCap = tickerCap;
-	if (name == "mario")
+	if (isMario)
 		facingRight = true;
 	else
 		facingRight = false;
-}
-
-//Sets the animation clips
-void Animation::setAnimations(SDL_Renderer* renderer, string name)
-{
-	leftAnimations = new vector <SDL_Texture*>();
-	rightAnimations = new vector <SDL_Texture*>();
-	if (name == "mario")
-	{
-		//Set right clips
-		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
-		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
-		rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
-		rightAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
-
-		//Set left clips
-		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
-		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
-		leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
-		leftAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
-	}
-	else if (name == "koopa")
-	{
-		//Set right clips
-		rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_1.png", renderer));
-		rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_2.png", renderer));
-
-		//Set left clips
-		leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer));
-		leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_2.png", renderer));
-	}
 }
 
 void Animation::updateAnimation(int velocity, bool jumping)
@@ -180,3 +139,48 @@ void Animation::updateItemAnimation()
 
 }
 
+void Animation::updateAbilityAnimation()
+{
+
+}
+
+vector <SDL_Texture*>* Animation::loadRightMarioTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* rightAnimations = new vector <SDL_Texture*>();
+	rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_still.png", renderer));
+	rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_1.png", renderer));
+	rightAnimations->push_back(Texture::LoadTexture("../images/mario/mario_right_2.png", renderer));
+	rightAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Right.png", renderer));
+
+	return rightAnimations;
+}
+
+vector <SDL_Texture*>* Animation::loadLeftMarioTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* leftAnimations = new vector <SDL_Texture*>();
+	leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_still.png", renderer));
+	leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_1.png", renderer));
+	leftAnimations->push_back(Texture::LoadTexture("../images/mario/mario_left_2.png", renderer));
+	leftAnimations->push_back(Texture::LoadTexture("../images/mario/Mario_Big_Jump_Left.png", renderer));
+
+	return leftAnimations;
+
+}
+
+vector <SDL_Texture*>* Animation::loadRightKoopaTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* rightAnimations = new vector <SDL_Texture*>();
+	rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_1.png", renderer));
+	rightAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Right_2.png", renderer));
+
+	return rightAnimations;
+}
+
+vector <SDL_Texture*>* Animation::loadLeftKoopaTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* leftAnimations = new vector <SDL_Texture*>();
+	leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer));
+	leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_2.png", renderer));
+
+	return leftAnimations;
+}

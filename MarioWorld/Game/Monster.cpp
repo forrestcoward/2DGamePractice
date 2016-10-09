@@ -12,9 +12,9 @@ Monster::Monster()
 }
 
 //Constructor
-Monster::Monster(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
+Monster::Monster(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations,int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
-	characterAnimation = new Animation(texture, name, 4, renderer);
+	characterAnimation = new Animation(rightAnimations, leftAnimations, 4, renderer, false);
 	jumping = false;
 	gravity = 1;
 	this->x = x;
@@ -25,7 +25,7 @@ Monster::Monster(SDL_Texture* texture, int x, int y, int velocity, int patrolRad
 	ability = "none";
 	this->velocity = velocity;
 	verticalVelocity = 0;
-	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture((*leftAnimations)[0], NULL, NULL, &w, &h);
 }
 
 //Deconstructor

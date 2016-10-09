@@ -90,7 +90,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -126,18 +126,16 @@ Creature* Texture::createLevelObjects(vector<SDL_Rect>*clips, string fileName, S
 		else if (currentCharacter == 'm')
 		{
 			SDL_Texture* marioTexture = Texture::LoadTexture("../images/mario_right_still.png", renderer);
-			mario = new Creature(marioTexture, currentX, currentY, 0, "mario", renderer);
+			mario = new Creature(rightMarioTextures, leftMarioTextures, currentX, currentY, 0, "mario", renderer);
 			mario->w = 16;
 			mario->h = 27;
-			mario->characterAnimation->setAnimations(renderer, mario->name);
 		}
 		else if (currentCharacter == 'k')
 		{
 			SDL_Texture* koopaTexture = Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer);
-			Monster* newKoopa = new Monster(koopaTexture, currentX, currentY, -2, 100, "koopa", renderer);
+			Monster* newKoopa = new Monster(rightKoopaTextures, leftKoopaTextures, currentX, currentY, -2, 100, "koopa", renderer);
 			newKoopa->w = 16;
 			newKoopa->h = 27;
-			newKoopa->characterAnimation->setAnimations(renderer, newKoopa->name);
 			mapMonsters->push_back(newKoopa);
 		}
 		else if (currentCharacter == 'c')

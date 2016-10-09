@@ -34,8 +34,8 @@ public:
 	int velocity;
 	int verticalVelocity;
 	bool jumping;
-	Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer);
-	Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer);
+	Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, string name, SDL_Renderer* renderer);
+	Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer);
 	Creature();
 	~Creature();
 	void Creature::checkDistance();

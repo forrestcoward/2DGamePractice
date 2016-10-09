@@ -131,23 +131,39 @@ int main(int argc, char **argv)
 	PlayMusic();
 	// Create the window we will draw on.
 	SDL_Window* window = SDL_CreateWindow(SCREEN_TITLE, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
 	// Create the renderer. This will draw to the window.
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
 	//Initialize map items
 	vector <ItemObject*>* mapItems = new vector <ItemObject*>();
+
 	//Initialize map terrain 
 	vector <Texture*>* mapTerrain = new vector <Texture*>();
+
 	//Initialize map creatures
 	vector <Monster*>* mapMonsters = new vector <Monster*>();
+
 	// Create background texture.
 	SDL_Texture* backgroundTexture = Texture::LoadTexture("../images/backgrounds/Icy_Background.png", renderer);
+
 	//Load icy tiles.
 	SDL_Texture* iceBlocks;
 	iceBlocks = Texture::LoadTexture("../images/tiles/Icy_Tiles.png", renderer);
+
+	//Load mario sprites
+	vector <SDL_Texture*>* marioRight = Animation::loadRightMarioTextures(renderer);
+	vector <SDL_Texture*>* marioLeft = Animation::loadLeftMarioTextures(renderer);
+
+	//Load koopa sprites
+	vector <SDL_Texture*>* koopaRight = Animation::loadRightKoopaTextures(renderer);
+	vector <SDL_Texture*>* koopaLeft = Animation::loadLeftKoopaTextures(renderer);
+
+
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	Creature* mario = Texture::createLevelObjects(tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
+	Creature* mario = Texture::createLevelObjects(marioRight, marioLeft, koopaRight, koopaLeft, tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
 
 	SDL_Event e;
 	bool running = true;

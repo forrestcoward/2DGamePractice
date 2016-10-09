@@ -21,12 +21,12 @@ Creature::Creature()
 }
 
 //Constructor for mario
-Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name, SDL_Renderer* renderer)
+Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
 	creatureSounds = new CreatureSoundEffects(name);
 	creatureSounds->runSoundTicker = 4;
 	abilityObject = NULL;
-	characterAnimation = new Animation(texture, name, 4, renderer);
+	characterAnimation = new Animation(rightAnimations, leftAnimations, 4, renderer, true);
 	jumping = false;
 	gravity = 1;
 	this->x = x;
@@ -35,15 +35,15 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, string name
 	this->name = name;
 	ability = "fireball";
 	verticalVelocity = 0;
-	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture((*rightAnimations)[0], NULL, NULL, &w, &h);
 }
 
 //Constructor for bad guys
-Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
+Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
 	creatureSounds = NULL;
 	abilityObject = NULL;
-	characterAnimation = new Animation(texture, name, 3, renderer);
+	characterAnimation = new Animation(rightAnimations, leftAnimations, 3, renderer, false);
 	jumping = false;
 	gravity = 1;
 	this->x = x;
@@ -54,7 +54,7 @@ Creature::Creature(SDL_Texture* texture, int x, int y, int velocity, int patrolR
 	ability = "fireball";
 	this->velocity = velocity;
 	verticalVelocity = 0;
-	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture((*leftAnimations)[0], NULL, NULL, &w, &h);
 }
 
 //Deconstructor
