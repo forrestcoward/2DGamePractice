@@ -162,6 +162,9 @@ int main(int argc, char **argv)
 	//Load Coin sprites
 	vector <SDL_Texture*>* coinTextures = Animation::loadItemTextures(renderer);
 
+	//Load fireball animations
+	vector <SDL_Texture*>* fireballAnimations = Animation::loadAbilityTextures("fireball", renderer);
+
 
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
@@ -194,7 +197,7 @@ int main(int argc, char **argv)
 					break;
 				case SDLK_UP:
 					if (!mario->jumping)
-						mario->useAbility(renderer);
+						mario->useAbility(fireballAnimations, renderer);
 					break;
 				default:
 					break;

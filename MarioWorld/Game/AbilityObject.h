@@ -3,7 +3,7 @@
 
 
 class Texture;
-class AbilityAnimation;
+class Animation;
 
 #include <iostream>
 #include <SDL.h>
@@ -21,14 +21,14 @@ public:
 	int y;
 	int velocity;
 	int verticalVelocity;
-	AbilityAnimation* abilityAnimation;
+	Animation* abilityAnimation;
 	bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain);
 	void AbilityObject::checkHeight();
 	void AbilityObject::moveX();
 	void AbilityObject::moveY();
 	int AbilityObject::getMaxDistance();
 	int AbilityObject::getDistanceTraveled();
-	AbilityObject(int x, int y, bool direction, string abilityName, SDL_Renderer* renderer);
+	AbilityObject::AbilityObject(vector <SDL_Texture*>* animations, int x, int y, bool direction, SDL_Renderer* renderer);
 	~AbilityObject();
 private:
 	int distanceTraveled;

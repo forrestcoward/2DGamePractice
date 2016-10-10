@@ -6,7 +6,7 @@ ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string
 {
 	this->x = x;
 	this->y = y;
-	itemAnimation = new Animation(itemTextures, tickerCap, renderer);
+	itemAnimation = new Animation(tickerCap, renderer, itemTextures, NULL);
 	itemSounds = new ItemSoundEffects(name);
 	this->name = name;
 }

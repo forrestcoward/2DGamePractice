@@ -7,7 +7,6 @@
 #include "Animation.h"
 #include "Monster.h"
 #include "AbilityObject.h"
-#include "AbilityAnimation.h"
 #include "ItemObject.h"
 
 const int SCREEN_WIDTH = 680;

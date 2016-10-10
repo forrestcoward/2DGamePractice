@@ -46,7 +46,7 @@ public:
 	void Creature::checkBorders();
 	void Creature::move();
 	void Creature::setAbility(string ability);
-	void Creature::useAbility(SDL_Renderer* renderer);
+	void Creature::useAbility(vector <SDL_Texture*>* animations, SDL_Renderer* renderer);
 	void Creature::updateAbilityAnimations();
 	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain);
 	void Creature::checkStompingMonster(vector <Monster*>* mapMonsters);

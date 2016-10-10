@@ -7,7 +7,6 @@
 #include "Animation.h"
 #include "Texture.h"
 #include "AbilityObject.h"
-#include "AbilityAnimation.h"
 #include "CreatureSoundEffects.h"
 
 const int SCREEN_WIDTH = 680;
@@ -156,11 +155,11 @@ void Creature::setAbility(string ability)
 }
 
 //Use ability
-void Creature::useAbility(SDL_Renderer* renderer)
+void Creature::useAbility(vector <SDL_Texture*>* animations, SDL_Renderer* renderer)
 {
 	if (abilityObject == NULL)
 	{
-		abilityObject = new AbilityObject(x + w, y + h / 2, characterAnimation->getDirection(), ability, renderer);
+		abilityObject = new AbilityObject(animations, x + w, y + h / 2, characterAnimation->getDirection(), renderer);
 		creatureSounds->playFireballSound();
 	}
 }
@@ -170,7 +169,7 @@ void Creature::updateAbilityAnimations()
 {
 	if (abilityObject != NULL)
 	{
-			abilityObject->abilityAnimation->AbilityAnimation::updateAbilityTexture();
+			abilityObject->abilityAnimation->Animation::updateAbilityAnimation();
 	}
 }
 

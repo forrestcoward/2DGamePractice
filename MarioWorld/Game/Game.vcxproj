@@ -77,7 +77,6 @@
   <ItemGroup>
     <ClInclude Include="..\Game\Creature.h" />
     <ClInclude Include="..\Game\Texture.h" />
-    <ClInclude Include="AbilityAnimation.h" />
     <ClInclude Include="AbilityObject.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="CreatureSoundEffects.h" />
@@ -89,7 +88,6 @@
     <ClCompile Include="..\Game\Creature.cpp" />
     <ClCompile Include="..\Game\Main.cpp" />
     <ClCompile Include="..\Game\Texture.cpp" />
-    <ClCompile Include="AbilityAnimation.cpp" />
     <ClCompile Include="AbilityObject.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="CreatureSoundEffects.cpp" />
