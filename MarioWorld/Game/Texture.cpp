@@ -9,7 +9,6 @@
 #include "AbilityObject.h"
 #include "AbilityAnimation.h"
 #include "ItemObject.h"
-#include "ItemAnimation.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -90,7 +89,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector <SDL_Texture*>* itemTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -125,14 +124,12 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		}
 		else if (currentCharacter == 'm')
 		{
-			SDL_Texture* marioTexture = Texture::LoadTexture("../images/mario_right_still.png", renderer);
 			mario = new Creature(rightMarioTextures, leftMarioTextures, currentX, currentY, 0, "mario", renderer);
 			mario->w = 16;
 			mario->h = 27;
 		}
 		else if (currentCharacter == 'k')
 		{
-			SDL_Texture* koopaTexture = Texture::LoadTexture("../images/baddies/Koopa_Red_Left_1.png", renderer);
 			Monster* newKoopa = new Monster(rightKoopaTextures, leftKoopaTextures, currentX, currentY, -2, 100, "koopa", renderer);
 			newKoopa->w = 16;
 			newKoopa->h = 27;
@@ -140,8 +137,7 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		}
 		else if (currentCharacter == 'c')
 		{
-			SDL_Texture* coinTexture = Texture::LoadTexture("../images/items/Coin_5.png", renderer);
-			ItemObject* newCoin = new ItemObject(coinTexture, currentX, currentY, "coin", 2, renderer);
+			ItemObject* newCoin = new ItemObject(itemTextures, currentX, currentY, "coin", 2, renderer);
 			newCoin->itemAnimation->h = 16;
 			newCoin->itemAnimation->w = 16;
 			newCoin->isCollidingBelow(mapTerrain);
@@ -250,6 +246,6 @@ void Texture::renderAllItemObjects(SDL_Rect* camera, vector <ItemObject*>* mapIt
 	for (unsigned int i = 0; i < mapItems->size(); i++)
 	{
 		if((*mapItems)[i]->getX() > camera->x + 50 && (*mapItems)[i]->getX() < camera->x + SCREEN_WIDTH +50)
-			Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->currentTexture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
+			Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->texture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
 	}
 }

@@ -17,11 +17,11 @@ using namespace std;
 class ItemObject
 {
 public:
-	ItemObject(SDL_Texture* texture, int x, int y, string name, int tickerCap, SDL_Renderer* renderer);
+	ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string name, int tickerCap, SDL_Renderer* renderer);
 	~ItemObject();
 	int ItemObject::getX();
 	int ItemObject::getY();
-	ItemAnimation* itemAnimation;
+	Animation* itemAnimation;
 	ItemSoundEffects* itemSounds;
 	string name;
 	void ItemObject::collectItem();

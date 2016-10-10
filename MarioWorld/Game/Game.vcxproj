@@ -81,7 +81,6 @@
     <ClInclude Include="AbilityObject.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="CreatureSoundEffects.h" />
-    <ClInclude Include="ItemAnimation.h" />
     <ClInclude Include="ItemObject.h" />
     <ClInclude Include="ItemSoundEffects.h" />
     <ClInclude Include="Monster.h" />
@@ -94,7 +93,6 @@
     <ClCompile Include="AbilityObject.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="CreatureSoundEffects.cpp" />
-    <ClCompile Include="ItemAnimation.cpp" />
     <ClCompile Include="ItemObject.cpp" />
     <ClCompile Include="ItemSoundEffects.cpp" />
     <ClCompile Include="Monster.cpp" />

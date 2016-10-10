@@ -152,18 +152,21 @@ int main(int argc, char **argv)
 	iceBlocks = Texture::LoadTexture("../images/tiles/Icy_Tiles.png", renderer);
 
 	//Load mario sprites
-	vector <SDL_Texture*>* marioRight = Animation::loadRightMarioTextures(renderer);
-	vector <SDL_Texture*>* marioLeft = Animation::loadLeftMarioTextures(renderer);
+	vector <SDL_Texture*>* marioRightTextures = Animation::loadRightMarioTextures(renderer);
+	vector <SDL_Texture*>* marioLeftTextures = Animation::loadLeftMarioTextures(renderer);
 
 	//Load koopa sprites
-	vector <SDL_Texture*>* koopaRight = Animation::loadRightKoopaTextures(renderer);
-	vector <SDL_Texture*>* koopaLeft = Animation::loadLeftKoopaTextures(renderer);
+	vector <SDL_Texture*>* koopaRightTextures = Animation::loadRightKoopaTextures(renderer);
+	vector <SDL_Texture*>* koopaLeftTextures = Animation::loadLeftKoopaTextures(renderer);
+
+	//Load Coin sprites
+	vector <SDL_Texture*>* coinTextures = Animation::loadItemTextures(renderer);
 
 
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	Creature* mario = Texture::createLevelObjects(marioRight, marioLeft, koopaRight, koopaLeft, tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
+	Creature* mario = Texture::createLevelObjects(marioRightTextures, marioLeftTextures, koopaRightTextures, koopaLeftTextures, coinTextures, tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
 
 	SDL_Event e;
 	bool running = true;

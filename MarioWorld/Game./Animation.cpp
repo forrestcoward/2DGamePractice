@@ -14,13 +14,12 @@ Animation::~Animation()
 	leftAnimations = NULL;
 }
 
-//Constructor
+//Constructor for mario and monsters
 Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int tickerCap, SDL_Renderer* renderer, bool isMario)
 {
 	this->rightAnimations = rightAnimations;
 	this->leftAnimations = leftAnimations;
 	abilityAnimations = NULL;
-	this->texture = texture;
 	animationFrame = 0;
 	animationTicker = 0; 
 	animationTickerCap = tickerCap;
@@ -28,6 +27,19 @@ Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture
 		facingRight = true;
 	else
 		facingRight = false;
+	itemAnimations = NULL;
+}
+
+//Constructor for items
+Animation::Animation(vector <SDL_Texture*>* itemAnimations, int tickerCap, SDL_Renderer* renderer)
+{
+	this->itemAnimations = itemAnimations;
+	animationFrame = 0;
+	animationTicker = 0;
+	animationTickerCap = tickerCap;
+	rightAnimations = NULL;
+	leftAnimations = NULL;
+	abilityAnimations = NULL;
 }
 
 void Animation::updateAnimation(int velocity, bool jumping)
@@ -115,6 +127,22 @@ void Animation::updateMonsterAnimation(int velocity, bool jumping)
 	}
 }
 
+void Animation::updateItemAnimation()
+{
+	if (animationTicker == animationTickerCap)
+	{
+		animationTicker = 0;
+		animationFrame++;
+	}
+	else
+		animationTicker++;
+
+	if (animationFrame > 7)
+		animationFrame = 0;
+
+	texture = (*itemAnimations)[animationFrame];
+}
+
 void Animation::updateDirection(bool direction, int* velocity)
 {
 	if (facingRight != direction)
@@ -132,11 +160,6 @@ void Animation::updateMonsterDirection()
 bool Animation::getDirection()
 {
 	return facingRight;
-}
-
-void Animation::updateItemAnimation() 
-{
-
 }
 
 void Animation::updateAbilityAnimation()
@@ -183,4 +206,20 @@ vector <SDL_Texture*>* Animation::loadLeftKoopaTextures(SDL_Renderer* renderer)
 	leftAnimations->push_back(Texture::LoadTexture("../images/baddies/Koopa_Red_Left_2.png", renderer));
 
 	return leftAnimations;
+}
+
+vector <SDL_Texture*>* Animation::loadItemTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* itemAnimations = new vector <SDL_Texture*>();
+
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_1.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_2.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_3.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_4.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_5.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_6.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_7.png", renderer));
+	itemAnimations->push_back(Texture::LoadTexture("../images/items/Coin_8.png", renderer));
+
+	return itemAnimations;
 }

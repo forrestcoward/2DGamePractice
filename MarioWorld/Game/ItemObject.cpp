@@ -1,13 +1,12 @@
 #include "ItemObject.h"
 #include "ItemSoundEffects.h"
-#include "ItemAnimation.h"
 
 //Constructor
-ItemObject::ItemObject(SDL_Texture* texture, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
+ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
 {
 	this->x = x;
 	this->y = y;
-	itemAnimation = new ItemAnimation(texture, name, tickerCap, renderer);
+	itemAnimation = new Animation(itemTextures, tickerCap, renderer);
 	itemSounds = new ItemSoundEffects(name);
 	this->name = name;
 }
@@ -53,7 +52,7 @@ void ItemObject::updateItemObjectAnimations(vector <ItemObject*>* mapItems)
 {
 	for (unsigned int i = 0; i < mapItems->size(); i++)
 	{
-		(*mapItems)[i]->itemAnimation->updateAnimation();
+		(*mapItems)[i]->itemAnimation->updateItemAnimation();
 	}
 }
 
