@@ -19,7 +19,7 @@ class Monster;
 class Creature
 {
 public: 
-	CreatureSoundEffects* creatureSounds;
+	SoundEffects* creatureSounds;
 	Animation* characterAnimation;
 	AbilityObject* abilityObject;
 	string name;

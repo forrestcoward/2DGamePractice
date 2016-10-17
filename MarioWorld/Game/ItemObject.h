@@ -6,7 +6,7 @@
 #ifndef ITEMOBJECT
 #define ITEMOBJECT
 
-class ItemSoundEffects;
+class SoundEffects;
 class ItemAnimation;
 class Texture;
 
@@ -22,7 +22,7 @@ public:
 	int ItemObject::getX();
 	int ItemObject::getY();
 	Animation* itemAnimation;
-	ItemSoundEffects* itemSounds;
+	SoundEffects* itemSounds;
 	string name;
 	void ItemObject::collectItem();
 	void ItemObject::isCollidingBelow(vector <Texture*>* Terrain);

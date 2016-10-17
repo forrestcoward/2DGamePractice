@@ -1,5 +1,5 @@
 #include "ItemObject.h"
-#include "ItemSoundEffects.h"
+#include "SoundEffects.h"
 
 //Constructor
 ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
@@ -7,7 +7,7 @@ ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string
 	this->x = x;
 	this->y = y;
 	itemAnimation = new Animation(tickerCap, renderer, itemTextures, NULL);
-	itemSounds = new ItemSoundEffects(name);
+	itemSounds = new SoundEffects(name);
 	this->name = name;
 }
 
