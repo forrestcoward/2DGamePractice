@@ -29,6 +29,7 @@
 #include "Animation.h"
 #include "Monster.h"
 #include "ItemObject.h"
+#include "SoundEffects.h"
 
 
 using namespace std;
@@ -151,6 +152,12 @@ int main(int argc, char **argv)
 	SDL_Texture* iceBlocks;
 	iceBlocks = Texture::LoadTexture("../images/tiles/Icy_Tiles.png", renderer);
 
+	//Load item sounds
+	vector <Mix_Chunk*>* itemSounds = SoundEffects::loadItemSounds();
+
+	//Load mario sounds
+	vector <Mix_Chunk*>* marioSounds = SoundEffects::loadMarioSounds();
+
 	//Load mario sprites
 	vector <SDL_Texture*>* marioRightTextures = Animation::loadRightMarioTextures(renderer);
 	vector <SDL_Texture*>* marioLeftTextures = Animation::loadLeftMarioTextures(renderer);
@@ -169,7 +176,7 @@ int main(int argc, char **argv)
 	//Setup the clips for our image
 	vector <SDL_Rect>* tileClips = Texture::cutSprites(iceBlocks);
 	//Create Terrain vector
-	Creature* mario = Texture::createLevelObjects(marioRightTextures, marioLeftTextures, koopaRightTextures, koopaLeftTextures, coinTextures, tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, renderer);
+	Creature* mario = Texture::createLevelObjects(marioRightTextures, marioLeftTextures, koopaRightTextures, koopaLeftTextures, coinTextures, tileClips, "level1.txt", iceBlocks, mapTerrain, mapMonsters, mapItems, backgroundTexture, marioSounds, itemSounds, renderer);
 
 	SDL_Event e;
 	bool running = true;

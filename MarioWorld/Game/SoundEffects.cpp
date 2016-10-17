@@ -7,9 +7,9 @@ SoundEffects::SoundEffects()
 }
 
 //Constructor
-SoundEffects::SoundEffects(string name)
+SoundEffects::SoundEffects(string name, vector <Mix_Chunk*>* objectSounds)
 {
-	setSounds(name);
+	soundEffects = objectSounds;
 }
 
 //Deconstructor
@@ -41,26 +41,27 @@ void SoundEffects::playStompSound()
 	Mix_PlayChannel(-1, (*soundEffects)[3], 0);
 }
 
-//Set sounds
-void SoundEffects::setSounds(string name)
+vector <Mix_Chunk*>* SoundEffects::loadItemSounds()
 {
-	soundEffects = new vector <Mix_Chunk*>();
-	if (name == "mario")
-	{
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/begin_to_jump.wav"));//Plays a more realistic run sound that run.wav file.
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/jump.wav"));
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/land.wav"));
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/stomp.wav"));
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/kick.wav"));
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/mario_throw.wav"));
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/fireball.wav"));
-	}
-	else if (name == "coin")
-	{
-		soundEffects->push_back(Mix_LoadWAV("../sounds/wav/coin.wav"));
-	}
-	else
-	{
-		//other items will go here
-	}
+	vector <Mix_Chunk*>* itemSounds = new vector <Mix_Chunk*>();
+	
+	itemSounds->push_back(Mix_LoadWAV("../sounds/wav/coin.wav"));
+	//load other sounds here eventually
+
+	return itemSounds;
+}
+
+vector <Mix_Chunk*>* SoundEffects::loadMarioSounds()
+{
+	vector <Mix_Chunk*>* marioSounds = new vector <Mix_Chunk*>();
+	
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/begin_to_jump.wav"));//Plays a more realistic run sound that run.wav file.
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/jump.wav"));
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/land.wav"));
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/stomp.wav"));
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/kick.wav"));
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/mario_throw.wav"));
+	marioSounds->push_back(Mix_LoadWAV("../sounds/wav/fireball.wav"));
+
+	return marioSounds;
 }

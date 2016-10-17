@@ -8,6 +8,7 @@
 #include "Monster.h"
 #include "AbilityObject.h"
 #include "ItemObject.h"
+#include "SoundEffects.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -88,7 +89,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector <SDL_Texture*>* itemTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector <SDL_Texture*>* itemTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, vector <Mix_Chunk*>* marioSounds, vector <Mix_Chunk*>* itemSounds, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -123,7 +124,7 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		}
 		else if (currentCharacter == 'm')
 		{
-			mario = new Creature(rightMarioTextures, leftMarioTextures, currentX, currentY, 0, "mario", renderer);
+			mario = new Creature(rightMarioTextures, leftMarioTextures, marioSounds, currentX, currentY, 0, "mario", renderer);
 			mario->w = 16;
 			mario->h = 27;
 		}
@@ -136,7 +137,7 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		}
 		else if (currentCharacter == 'c')
 		{
-			ItemObject* newCoin = new ItemObject(itemTextures, currentX, currentY, "coin", 2, renderer);
+			ItemObject* newCoin = new ItemObject(itemTextures, itemSounds, currentX, currentY, "coin", 2, renderer);
 			newCoin->itemAnimation->h = 16;
 			newCoin->itemAnimation->w = 16;
 			newCoin->isCollidingBelow(mapTerrain);

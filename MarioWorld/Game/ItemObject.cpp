@@ -2,12 +2,12 @@
 #include "SoundEffects.h"
 
 //Constructor
-ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
+ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, vector <Mix_Chunk*>* itemSounds, int x, int y, string name, int tickerCap, SDL_Renderer* renderer)
 {
 	this->x = x;
 	this->y = y;
 	itemAnimation = new Animation(tickerCap, renderer, itemTextures, NULL);
-	itemSounds = new SoundEffects(name);
+	this->itemSounds = new SoundEffects(name, itemSounds);
 	this->name = name;
 }
 

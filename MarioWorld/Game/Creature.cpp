@@ -20,9 +20,9 @@ Creature::Creature()
 }
 
 //Constructor for mario
-Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, string name, SDL_Renderer* renderer)
+Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, vector <Mix_Chunk*>* marioSounds, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
-	creatureSounds = new SoundEffects(name);
+	creatureSounds = new SoundEffects(name, marioSounds);
 	creatureSounds->runSoundTicker = 4;
 	abilityObject = NULL;
 	characterAnimation = new Animation(rightAnimations, leftAnimations, 4, renderer, true);

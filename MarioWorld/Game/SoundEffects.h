@@ -4,6 +4,9 @@
 #include <SDL_mixer.h>
 #include <iostream>
 
+#ifndef SOUNDEFFECTS
+#define SOUNDEFFECTS
+
 using namespace std;
 
 class SoundEffects
@@ -16,9 +19,11 @@ public:
 	void SoundEffects::playJumpSound();
 	void SoundEffects::playRunSound();
 	void SoundEffects::playStompSound();
-	SoundEffects(string name);
+	static vector <Mix_Chunk*>* SoundEffects::loadItemSounds();
+	static vector <Mix_Chunk*>* SoundEffects::loadMarioSounds();
+	SoundEffects(string name, vector <Mix_Chunk*>* objectSounds);
 private:
 	vector <Mix_Chunk*>* soundEffects;
-	void SoundEffects::setSounds(string name);
 };
 
+#endif
