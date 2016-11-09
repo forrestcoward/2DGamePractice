@@ -21,6 +21,7 @@ public:
 	void SoundEffects::playStompSound();
 	static vector <Mix_Chunk*>* SoundEffects::loadItemSounds();
 	static vector <Mix_Chunk*>* SoundEffects::loadMarioSounds();
+	static vector <Mix_Chunk*>* SoundEffects::loadKoopaShellSounds();
 	SoundEffects(string name, vector <Mix_Chunk*>* objectSounds);
 private:
 	vector <Mix_Chunk*>* soundEffects;

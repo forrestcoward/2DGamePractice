@@ -6,14 +6,12 @@
 #include "Texture.h"
 #include "Monster.h"
 
-//Default constructor
-Monster::Monster()
-{
-}
-
 //Constructor
 Monster::Monster(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations,int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
+	creatureSounds = NULL;
+	abilityObject = NULL;
+	dying = false;
 	characterAnimation = new Animation(rightAnimations, leftAnimations, 4, renderer, false);
 	jumping = false;
 	gravity = 1;
@@ -48,18 +46,26 @@ void Monster::moveAllMonsters(vector <Monster*>* mapMonsters)
 {
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
-
-		if ((abs((*mapMonsters)[i]->distanceFromOrigin) > (*mapMonsters)[i]->patrolRadius))//Turn around
+		if (!(*mapMonsters)[i]->dying)
 		{
-			(*mapMonsters)[i]->velocity = -(*mapMonsters)[i]->velocity;
-			(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
-			(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
-			(*mapMonsters)[i]->characterAnimation->updateMonsterDirection();
+			
+			if ((abs((*mapMonsters)[i]->distanceFromOrigin) > (*mapMonsters)[i]->patrolRadius))//Turn around
+			{
+				
+				(*mapMonsters)[i]->velocity = -(*mapMonsters)[i]->velocity;
+				(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
+				(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
+				(*mapMonsters)[i]->characterAnimation->updateMonsterDirection();
+			}
+			else//Keep walking
+			{
+				(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
+				(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
+			}
 		}
-		else//Keep walking
+		else 
 		{
-			(*mapMonsters)[i]->x += (*mapMonsters)[i]->velocity;
-			(*mapMonsters)[i]->distanceFromOrigin += (*mapMonsters)[i]->velocity;
+			//continue dying movement
 		}
 	}
 }

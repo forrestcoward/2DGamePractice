@@ -262,3 +262,16 @@ vector <SDL_Texture*>* Animation::loadAbilityTextures(string ability, SDL_Render
 
 	return abilityTextures;
 }
+
+vector <SDL_Texture*>* Animation::loadKoopaShellTextures(SDL_Renderer* renderer)
+{
+	vector <SDL_Texture*>* koopaShellTextures = new vector <SDL_Texture*>();
+
+	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_Flip.png", renderer));
+	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_1.png", renderer));
+	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_2.png", renderer));
+	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_3.png", renderer));
+	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_4.png", renderer));
+
+	return koopaShellTextures;
+}

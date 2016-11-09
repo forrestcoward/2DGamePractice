@@ -8,7 +8,6 @@ class Monster :
 {
 public:
 	Monster::Monster(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer);
-	Monster();
 	~Monster();
 	static void Monster::moveAllMonsters(vector <Monster*>* mapMonsters);
 	static void Monster::updateAllMonsterAnimations(vector <Monster*>* mapMonsters);

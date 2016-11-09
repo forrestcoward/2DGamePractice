@@ -66,3 +66,13 @@ vector <Mix_Chunk*>* SoundEffects::loadMarioSounds()
 
 	return marioSounds;
 }
+
+vector <Mix_Chunk*>* SoundEffects::loadKoopaShellSounds()
+{
+	vector <Mix_Chunk*>* koopaShellSounds = new vector <Mix_Chunk*>();
+
+	koopaShellSounds->push_back(Mix_LoadWAV("../sounds/wav/kick.wav"));
+	koopaShellSounds->push_back(Mix_LoadWAV("../sounds/wav/stomp.wav"));
+
+	return koopaShellSounds;
+}

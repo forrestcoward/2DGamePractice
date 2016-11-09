@@ -6,11 +6,13 @@ class Texture;
 class Animation;
 class Monster;
 class Creature;
+class ItemObject;
 
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -25,7 +27,7 @@ public:
 	int verticalVelocity;
 	Animation* abilityAnimation;
 	bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain);
-	bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters);
+	bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters, vector <ItemObject*>* mapItems, vector <SDL_Texture*>* koopaShellTextures, vector <Mix_Chunk*>* koopaShellSounds, SDL_Renderer* renderer);
 	void AbilityObject::checkHeight();
 	void AbilityObject::moveX();
 	void AbilityObject::moveY();

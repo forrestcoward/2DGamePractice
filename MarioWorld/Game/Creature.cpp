@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "AbilityObject.h"
 #include "SoundEffects.h"
+#include "ItemObject.h"
 
 const int SCREEN_WIDTH = 680;
 const int SCREEN_HEIGHT = 380;
@@ -22,6 +23,7 @@ Creature::Creature()
 //Constructor for mario
 Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, vector <Mix_Chunk*>* marioSounds, int x, int y, int velocity, string name, SDL_Renderer* renderer)
 {
+	dying = false;
 	creatureSounds = new SoundEffects(name, marioSounds);
 	creatureSounds->runSoundTicker = 4;
 	abilityObject = NULL;
@@ -38,6 +40,7 @@ Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>
 }
 
 //Constructor for bad guys
+/*
 Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius, string name, SDL_Renderer* renderer)
 {
 	creatureSounds = NULL;
@@ -55,6 +58,7 @@ Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>
 	verticalVelocity = 0;
 	SDL_QueryTexture((*leftAnimations)[0], NULL, NULL, &w, &h);
 }
+*/
 
 //Deconstructor
 Creature::~Creature()
@@ -177,7 +181,7 @@ void Creature::updateAbilityAnimations()
 }
 
 //Move all ability objects
-void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters)
+void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, vector <SDL_Texture*>* koopaShellTextures, vector <Mix_Chunk*>* koopaShellSounds, SDL_Renderer* renderer)
 {
 	if (abilityObject != NULL)
 	{
@@ -187,7 +191,7 @@ void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster
 		abilityObject->isCollidingBelow(mapTerrain);
 		abilityObject->checkHeight();
 		
-		if (!abilityObject->hitMonster(mapMonsters))
+		if (!abilityObject->hitMonster(mapMonsters, mapItems, koopaShellTextures, koopaShellSounds, renderer))
 			checkAbilityDistance();
 		else
 		{

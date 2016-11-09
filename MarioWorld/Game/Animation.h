@@ -29,6 +29,7 @@ public:
 	static vector <SDL_Texture*>* Animation::loadLeftMarioTextures(SDL_Renderer* renderer);
 	static vector <SDL_Texture*>* Animation::loadRightKoopaTextures(SDL_Renderer* renderer);
 	static vector <SDL_Texture*>* Animation::loadLeftKoopaTextures(SDL_Renderer* renderer);
+	static vector <SDL_Texture*>* Animation::loadKoopaShellTextures(SDL_Renderer* renderer);
 	static vector <SDL_Texture*>* Animation::loadItemTextures(SDL_Renderer* renderer);
 	static vector <SDL_Texture*>* Animation::loadAbilityTextures(string ability, SDL_Renderer* renderer);
 private:

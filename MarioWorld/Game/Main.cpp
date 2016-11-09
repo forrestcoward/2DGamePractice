@@ -159,6 +159,9 @@ int main(int argc, char **argv)
 	//Load mario sounds
 	vector <Mix_Chunk*>* marioSounds = SoundEffects::loadMarioSounds();
 
+	//Load koopa shell sounds
+	vector <Mix_Chunk*>* koopaShellSounds = SoundEffects::loadKoopaShellSounds();
+
 	//Load mario sprites
 	vector <SDL_Texture*>* marioRightTextures = Animation::loadRightMarioTextures(renderer);
 	vector <SDL_Texture*>* marioLeftTextures = Animation::loadLeftMarioTextures(renderer);
@@ -172,6 +175,9 @@ int main(int argc, char **argv)
 
 	//Load fireball animations
 	vector <SDL_Texture*>* fireballAnimations = Animation::loadAbilityTextures("fireball", renderer);
+
+	//Load koopa shell animations
+	vector <SDL_Texture*>* koopaShellTextures = Animation::loadKoopaShellTextures(renderer);
 
 
 	//Setup the clips for our image
@@ -245,8 +251,9 @@ int main(int argc, char **argv)
 		mario->checkLand(mapTerrain);
 		mario->checkBorders();
 		mario->updateAbilityAnimations();
-		mario->moveAbilityObjects(mapTerrain, mapMonsters);
+		mario->moveAbilityObjects(mapTerrain, mapMonsters, mapItems, koopaShellTextures, koopaShellSounds, renderer);
 		mario->checkStompingMonster(mapMonsters);
+
 
 		// Clear the screen.
 		SDL_RenderClear(renderer);

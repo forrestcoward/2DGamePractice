@@ -2,6 +2,8 @@
 #include "Texture.h"
 #include "Monster.h"
 #include "Creature.h"
+#include "ItemObject.h"
+
 
 
 //Default Constructor
@@ -45,12 +47,14 @@ bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain)
 }
 
 //Check if object hit a monster
-bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters)
+bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters, vector <ItemObject*>* mapItems, vector <SDL_Texture*>* koopaShellTextures, vector <Mix_Chunk*>* koopaShellSounds, SDL_Renderer* renderer)
 {
 	for (int i = 0; i < mapMonsters->size(); i++)
 	{
 		if ((((x + abilityAnimation->w) > (*mapMonsters)[i]->x) && (x + abilityAnimation->w) < ((*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (((y + abilityAnimation->h) > (*mapMonsters)[i]->y)) && (((y + abilityAnimation->h) < ((*mapMonsters)[i]->y + (*mapMonsters)[i]->y))))
 		{
+			if ((*mapMonsters)[i]->name == "koopa")
+				mapItems->push_back(new ItemObject(koopaShellTextures, koopaShellSounds, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y, "koopaShell", 2, renderer));
 			(*mapMonsters)[i]->~Monster();
 			mapMonsters->erase(mapMonsters->begin() + i);
 			return true;

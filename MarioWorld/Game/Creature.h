@@ -6,6 +6,7 @@ class Animation;
 class Texture;
 class AbilityObject;
 class SoundEffects;
+class ItemObject;
 
 #include <iostream>
 #include <SDL.h>
@@ -34,8 +35,9 @@ public:
 	int velocity;
 	int verticalVelocity;
 	bool jumping;
+	bool dying;
 	Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, vector <Mix_Chunk*>* marioSounds, int x, int y, int velocity, string name, SDL_Renderer* renderer);
-	Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer);
+	//Creature::Creature(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int x, int y, int velocity, int patrolRadius , string name, SDL_Renderer* renderer); 
 	Creature();
 	~Creature();
 	void Creature::checkAbilityDistance();
@@ -48,7 +50,7 @@ public:
 	void Creature::setAbility(string ability);
 	void Creature::useAbility(vector <SDL_Texture*>* animations, SDL_Renderer* renderer);
 	void Creature::updateAbilityAnimations();
-	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters);
+	void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, vector <SDL_Texture*>* koopaShellTextures, vector <Mix_Chunk*>* koopaShellSounds, SDL_Renderer* renderer);
 	void Creature::checkStompingMonster(vector <Monster*>* mapMonsters);
 	void Creature::die();
 	void Creature::stompJump();

@@ -89,7 +89,7 @@ vector <SDL_Rect>* Texture::cutSprites(SDL_Texture* spriteSheet)
 }
 
 //Return vector of level terrain textures
-Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector <SDL_Texture*>* itemTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, vector <Mix_Chunk*>* marioSounds, vector <Mix_Chunk*>* itemSounds, SDL_Renderer* renderer)
+Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures, vector <SDL_Texture*>* leftMarioTextures, vector <SDL_Texture*>* rightKoopaTextures, vector <SDL_Texture*>* leftKoopaTextures, vector <SDL_Texture*>* coinTextures, vector<SDL_Rect>*clips, string fileName, SDL_Texture* spriteSheet, vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters, vector <ItemObject*>* mapItems, SDL_Texture* backgroundTexture, vector <Mix_Chunk*>* marioSounds, vector <Mix_Chunk*>* itemSounds, SDL_Renderer* renderer)
 {
 	Creature* mario = NULL;
 	int currentX = 0;
@@ -137,7 +137,7 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		}
 		else if (currentCharacter == 'c')
 		{
-			ItemObject* newCoin = new ItemObject(itemTextures, itemSounds, currentX, currentY, "coin", 2, renderer);
+			ItemObject* newCoin = new ItemObject(coinTextures, itemSounds, currentX, currentY, "coin", 2, renderer);
 			newCoin->itemAnimation->h = 16;
 			newCoin->itemAnimation->w = 16;
 			newCoin->isCollidingBelow(mapTerrain);
@@ -174,7 +174,8 @@ void Texture::renderAllMonsters(SDL_Rect* camera, vector <Monster*>* mapMonsters
 {
 	for (unsigned int i = 0; i < mapMonsters->size(); i++)
 	{
-		(*mapMonsters)[i]->checkLand(mapTerrain);
+		if(!(*mapMonsters)[i]->dying)
+			(*mapMonsters)[i]->checkLand(mapTerrain);
 		if((*mapMonsters)[i]->x > camera->x - 50 && (*mapMonsters)[i]->x < camera->x + SCREEN_WIDTH + 50)
 			Texture::RenderTexture(camera, (*mapMonsters)[i]->characterAnimation->texture, renderer, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y);
 	}
