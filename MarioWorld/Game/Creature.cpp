@@ -61,6 +61,8 @@ Creature::~Creature()
 {
 	characterAnimation->~Animation();
 	delete characterAnimation;
+	if (creatureSounds != NULL)
+		delete creatureSounds;
 
 	if (abilityObject != NULL)
 	{
@@ -171,10 +173,11 @@ void Creature::updateAbilityAnimations()
 	{
 			abilityObject->abilityAnimation->Animation::updateAbilityAnimation();
 	}
+
 }
 
 //Move all ability objects
-void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain)
+void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain, vector <Monster*>* mapMonsters)
 {
 	if (abilityObject != NULL)
 	{
@@ -183,12 +186,20 @@ void Creature::moveAbilityObjects(vector <Texture*>* mapTerrain)
 		abilityObject->height += abs(abilityObject->verticalVelocity);
 		abilityObject->isCollidingBelow(mapTerrain);
 		abilityObject->checkHeight();
-		checkDistance();
+		
+		if (!abilityObject->hitMonster(mapMonsters))
+			checkAbilityDistance();
+		else
+		{
+			abilityObject->~AbilityObject();
+			delete abilityObject;
+			abilityObject = NULL;
+		}
 	}
 }
 
 //Check fireball distance traveled
-void Creature::checkDistance()
+void Creature::checkAbilityDistance()
 {
 	if (abilityObject->getDistanceTraveled() > abilityObject->getMaxDistance())
 	{
@@ -225,6 +236,7 @@ void Creature::stompJump()
 {
 	verticalVelocity = -6;
 }
+
 
 
 

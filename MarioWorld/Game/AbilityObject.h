@@ -4,6 +4,8 @@
 
 class Texture;
 class Animation;
+class Monster;
+class Creature;
 
 #include <iostream>
 #include <SDL.h>
@@ -23,6 +25,7 @@ public:
 	int verticalVelocity;
 	Animation* abilityAnimation;
 	bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain);
+	bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters);
 	void AbilityObject::checkHeight();
 	void AbilityObject::moveX();
 	void AbilityObject::moveY();

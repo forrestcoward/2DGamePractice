@@ -30,6 +30,7 @@
 #include "Monster.h"
 #include "ItemObject.h"
 #include "SoundEffects.h"
+#include "AbilityObject.h"
 
 
 using namespace std;
@@ -244,7 +245,7 @@ int main(int argc, char **argv)
 		mario->checkLand(mapTerrain);
 		mario->checkBorders();
 		mario->updateAbilityAnimations();
-		mario->moveAbilityObjects(mapTerrain);
+		mario->moveAbilityObjects(mapTerrain, mapMonsters);
 		mario->checkStompingMonster(mapMonsters);
 
 		// Clear the screen.

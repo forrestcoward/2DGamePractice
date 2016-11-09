@@ -15,6 +15,7 @@ SoundEffects::SoundEffects(string name, vector <Mix_Chunk*>* objectSounds)
 //Deconstructor
 SoundEffects::~SoundEffects()
 {
+
 }
 
 //Play fireball sound

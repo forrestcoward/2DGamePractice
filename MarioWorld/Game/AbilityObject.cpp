@@ -1,5 +1,7 @@
 #include "AbilityObject.h"
 #include "Texture.h"
+#include "Monster.h"
+#include "Creature.h"
 
 
 //Default Constructor
@@ -39,6 +41,21 @@ bool AbilityObject::isCollidingBelow(vector <Texture*>* Terrain)
 		}
 	}
 
+	return false;
+}
+
+//Check if object hit a monster
+bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters)
+{
+	for (int i = 0; i < mapMonsters->size(); i++)
+	{
+		if ((((x + abilityAnimation->w) > (*mapMonsters)[i]->x) && (x + abilityAnimation->w) < ((*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (((y + abilityAnimation->h) > (*mapMonsters)[i]->y)) && (((y + abilityAnimation->h) < ((*mapMonsters)[i]->y + (*mapMonsters)[i]->y))))
+		{
+			(*mapMonsters)[i]->~Monster();
+			mapMonsters->erase(mapMonsters->begin() + i);
+			return true;
+		}
+	}
 	return false;
 }
 
