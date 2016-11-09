@@ -245,7 +245,7 @@ void Texture::renderAllItemObjects(SDL_Rect* camera, vector <ItemObject*>* mapIt
 {
 	for (unsigned int i = 0; i < mapItems->size(); i++)
 	{
-		if((*mapItems)[i]->getX() > camera->x + 50 && (*mapItems)[i]->getX() < camera->x + SCREEN_WIDTH + 50)
+		if((*mapItems)[i]->getX() > camera->x - 50 && (*mapItems)[i]->getX() < camera->x + SCREEN_WIDTH + 50)
 			Texture::RenderTexture(camera, (*mapItems)[i]->itemAnimation->texture, renderer, (*mapItems)[i]->getX(), (*mapItems)[i]->getY());
 	}
 }
