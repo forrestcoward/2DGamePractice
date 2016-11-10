@@ -2,11 +2,12 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/SDL_Samples/.vs/
-/SDL_Samples/Debug/
-/SDL_Samples/SDL_Samples/Debug/
-/SDL_Samples/SDL_Samples.sdf
-/SDL_Samples/SDL_Samples.VC.opendb
-/SDL_Samples/SDL_Samples/SDL_Samples.vcxproj.user
-/SDL_Samples/SDL_Samples.VC.VC.opendb
-/SDL_Samples/SDL_Samples.VC.db
+/MarioWorld/.vs/
+/MarioWorld/Debug/
+/MarioWorld/Game/Debug/
+/MarioWorld/Game.sdf
+/MarioWorld/Game.VC.opendb
+/MarioWorld/Game/Game.vcxproj.user
+/MarioWorld/Game.VC.VC.opendb
+/MarioWorld/Game.VC.db
+/MarioWorld/MarioWorld.VC.opendb
