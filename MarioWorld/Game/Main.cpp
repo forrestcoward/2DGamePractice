@@ -246,13 +246,14 @@ int main(int argc, char **argv)
 		Monster::updateAllMonsterAnimations(mapMonsters);
 		Monster::moveAllMonsters(mapMonsters);
 		Texture::moveCamera(&camera, mario);
-		ItemObject::updateItemObjectAnimations(mapItems);
 		mario->jumpAdjust();
 		mario->checkLand(mapTerrain);
 		mario->checkBorders();
 		mario->updateAbilityAnimations();
 		mario->moveAbilityObjects(mapTerrain, mapMonsters, mapItems, koopaShellTextures, koopaShellSounds, renderer);
 		mario->checkStompingMonster(mapMonsters);
+		ItemObject::updateItemObjectAnimations(mapItems);
+		ItemObject::checkLand(mapItems, mapTerrain);
 
 
 		// Clear the screen.

@@ -6,7 +6,7 @@ ItemObject::ItemObject(vector <SDL_Texture*>* itemTextures, vector <Mix_Chunk*>*
 {
 	this->x = x;
 	this->y = y;
-	itemAnimation = new Animation(tickerCap, renderer, itemTextures, NULL);
+	itemAnimation = new Animation(tickerCap, renderer, name, itemTextures, NULL);
 	this->itemSounds = new SoundEffects(name, itemSounds);
 	this->name = name;
 }
@@ -54,5 +54,12 @@ void ItemObject::updateItemObjectAnimations(vector <ItemObject*>* mapItems)
 	{
 		(*mapItems)[i]->itemAnimation->updateItemAnimation();
 	}
+}
+
+//Check if all items are on the ground
+void ItemObject::checkLand(vector <ItemObject*>* mapItems, vector <Texture*>* Terrain)
+{
+	for (int i = 0; i < mapItems->size(); i++)
+		(*mapItems)[i]->isCollidingBelow(Terrain);
 }
 

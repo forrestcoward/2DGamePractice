@@ -11,11 +11,14 @@ using namespace std;
 class Animation
 {
 public:
+	string name;
+	bool stationary;
+	int animationFameCount;
 	int w;
 	int h;
 	Animation();
 	Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture*>* leftAnimations, int tickerCap, SDL_Renderer* renderer, bool isMario);
-	Animation::Animation(int tickerCap, SDL_Renderer* renderer, vector <SDL_Texture*>* itemAnimations, vector <SDL_Texture*>* abilityAnimations);
+	Animation::Animation(int tickerCap, SDL_Renderer* renderer, string name, vector <SDL_Texture*>* itemAnimations, vector <SDL_Texture*>* abilityAnimations);
 	~Animation();
 	SDL_Texture* texture;
 	void Animation::updateAnimation(int velocity, bool jumping);
@@ -37,6 +40,7 @@ private:
 	int animationFrame;
 	int animationTicker;
 	int animationTickerCap;
+	void setAnimationCount(string name);
 	vector <SDL_Texture*>* rightAnimations;
 	vector <SDL_Texture*>* leftAnimations;
 	vector <SDL_Texture*>* abilityAnimations;

@@ -28,6 +28,7 @@ public:
 	void ItemObject::collectItem();
 	void ItemObject::isCollidingBelow(vector <Texture*>* Terrain);
 	static void ItemObject::updateItemObjectAnimations(vector <ItemObject*>* mapItems);
+	static void ItemObject::checkLand(vector <ItemObject*>* mapItems, vector <Texture*>* Terrain);
 private:
 	int x;
 	int y;

@@ -32,8 +32,9 @@ Animation::Animation(vector <SDL_Texture*>* rightAnimations, vector <SDL_Texture
 }
 
 //Constructor for items/abilities
-Animation::Animation(int tickerCap, SDL_Renderer* renderer, vector <SDL_Texture*>* itemAnimations = nullptr, vector <SDL_Texture*>* abilityAnimations = nullptr)
+Animation::Animation(int tickerCap, SDL_Renderer* renderer, string name,  vector <SDL_Texture*>* itemAnimations = nullptr, vector <SDL_Texture*>* abilityAnimations = nullptr)
 {
+	this->name = name;
 	animationFrame = 0;
 	animationTicker = 0;
 	animationTickerCap = tickerCap;
@@ -41,15 +42,18 @@ Animation::Animation(int tickerCap, SDL_Renderer* renderer, vector <SDL_Texture*
 	rightAnimations = NULL;
 	leftAnimations = NULL;
 	this->abilityAnimations = abilityAnimations;
+	setAnimationCount(name);
 	if (abilityAnimations != NULL)
 	{
 		w = 8;
 		h = 8;
+		stationary = false;
 	}
 	else
 	{
 		w = 16;
 		h = 16;
+		stationary = true;
 	}
 }
 
@@ -147,13 +151,17 @@ void Animation::updateItemAnimation()
 		animationTicker = 0;
 		animationFrame++;
 	}
-	else
+	else if (!stationary && name == "koopaShell")
+		animationTicker++;
+	else if (name != "koopaShell")
 		animationTicker++;
 
-	if (animationFrame > 7)
-		animationFrame = 0;
+		if (animationFrame > animationFameCount && name != "koopaShell")
+			animationFrame = 0;
+		else if (animationFrame > animationFameCount)
+			animationFrame = 1;
 
-	texture = (*itemAnimations)[animationFrame];
+		texture = (*itemAnimations)[animationFrame];
 }
 
 void Animation::updateDirection(bool direction, int* velocity)
@@ -273,5 +281,14 @@ vector <SDL_Texture*>* Animation::loadKoopaShellTextures(SDL_Renderer* renderer)
 	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_3.png", renderer));
 	koopaShellTextures->push_back(Texture::LoadTexture("../images/baddies/Red_Shell_4.png", renderer));
 
+
 	return koopaShellTextures;
+}
+
+void Animation::setAnimationCount(string name)
+{
+	if (name == "koopaShell")
+		animationFameCount = 4;
+	else if (name == "coin")
+		animationFameCount = 7;
 }

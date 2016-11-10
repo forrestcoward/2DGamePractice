@@ -20,7 +20,7 @@ AbilityObject::AbilityObject(vector <SDL_Texture*>* animations, int x, int y, bo
 	else
 		velocity = -8;
 	verticalVelocity = 4;
-	abilityAnimation = new Animation(2, renderer, NULL, animations);
+	abilityAnimation = new Animation(2, renderer, "fireball", NULL, animations);
 }
 
 //Deconstructor
@@ -54,7 +54,7 @@ bool AbilityObject::hitMonster(vector<Monster*>* mapMonsters, vector <ItemObject
 		if ((((x + abilityAnimation->w) > (*mapMonsters)[i]->x) && (x + abilityAnimation->w) < ((*mapMonsters)[i]->x + (*mapMonsters)[i]->w)) && (((y + abilityAnimation->h) > (*mapMonsters)[i]->y)) && (((y + abilityAnimation->h) < ((*mapMonsters)[i]->y + (*mapMonsters)[i]->y))))
 		{
 			if ((*mapMonsters)[i]->name == "koopa")
-				mapItems->push_back(new ItemObject(koopaShellTextures, koopaShellSounds, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y, "koopaShell", 2, renderer));
+				mapItems->push_back(new ItemObject(koopaShellTextures, koopaShellSounds, (*mapMonsters)[i]->x, (*mapMonsters)[i]->y + (*mapMonsters)[i]->h, "koopaShell", 2, renderer));
 			(*mapMonsters)[i]->~Monster();
 			mapMonsters->erase(mapMonsters->begin() + i);
 			return true;

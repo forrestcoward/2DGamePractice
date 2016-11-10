@@ -138,8 +138,6 @@ Creature* Texture::createLevelObjects(vector <SDL_Texture*>* rightMarioTextures,
 		else if (currentCharacter == 'c')
 		{
 			ItemObject* newCoin = new ItemObject(coinTextures, itemSounds, currentX, currentY, "coin", 2, renderer);
-			newCoin->itemAnimation->h = 16;
-			newCoin->itemAnimation->w = 16;
 			newCoin->isCollidingBelow(mapTerrain);
 			mapItems->push_back(newCoin);
 		}
